@@ -2,7 +2,14 @@
 #define BARGP_H
 
 
-struct ArgumentDefinition {};
+// more expressive way of allocating 1 byte
+#define byte char
+
+
+struct ArgumentDefinition {
+    char* name;
+    byte type;
+};
 
 
 #endif  /* BARGP_H */
