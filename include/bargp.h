@@ -2,4 +2,7 @@
 #define BARGP_H
 
 
+struct ArgumentDefinition {};
+
+
 #endif  /* BARGP_H */
