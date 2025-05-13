@@ -21,7 +21,7 @@ int main(int argc, char** argv) {
     struct Arguments args;
 
 
-    parse_args(&args, argc, argv, &argdefs);
+    parse_args(&args, argc, (const char**)(argv), (const struct ArgumentDefinition*)(&argdefs));
 
     return 0;
 }

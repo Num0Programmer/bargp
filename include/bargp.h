@@ -17,4 +17,12 @@ struct ArgumentDefinition {
 };
 
 
+void parse_args(
+    struct Arguments* args,
+    const int argc,
+    const char** argv,
+    const struct ArgumentDefinition* argdefs
+);
+
+
 #endif  /* BARGP_H */
