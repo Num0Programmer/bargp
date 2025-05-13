@@ -5,6 +5,8 @@
 
 const struct ArgumentDefinition argdefs[] = {
     { .name = "out", .type = STRING },
+    { .name = "width", .type = LONG },
+    { .name = "height", .type = LONG },
 };
 
 
