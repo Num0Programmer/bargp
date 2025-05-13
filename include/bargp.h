@@ -2,13 +2,17 @@
 #define BARGP_H
 
 
-// more expressive way of allocating 1 byte
-#define byte char
+enum ArgType {
+    CHAR = 0,
+    LONG,
+    DOUBLE,
+    STRING
+};
 
 
 struct ArgumentDefinition {
     char* name;
-    byte type;
+    enum ArgType type;
 };
 
 

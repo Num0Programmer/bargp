@@ -3,7 +3,9 @@
 #include <stdlib.h>
 
 
-const struct ArgumentDefinition argdefs[] = {};
+const struct ArgumentDefinition argdefs[] = {
+    { .name = "out", .type = STRING },
+};
 
 
 int main(int argc, char** argv) {
