@@ -10,6 +10,18 @@ const struct ArgumentDefinition argdefs[] = {
 };
 
 
+struct Arguments {
+    char* outfile;
+    unsigned int width;
+    unsigned int height;
+};
+
+
 int main(int argc, char** argv) {
+    struct Arguments args;
+
+
+    parse_args(&args, argc, argv, &argdefs);
+
     return 0;
 }
