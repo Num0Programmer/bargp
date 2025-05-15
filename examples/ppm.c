@@ -12,20 +12,22 @@ const struct ArgumentDefinition argdefs[] = {
 
 struct Arguments {
     char* outfile;
-    unsigned int width;
-    unsigned int height;
+    size_t width;
+    size_t height;
 };
 
 
 int main(int argc, char** argv) {
     struct Arguments args;
     args.outfile = "bullshit.ppm";
+    args.width = 666;
+    args.height = 420;
 
 
-    // printf("&args = %lu\n", &args);
-    // printf("&args.outfile = %lu\n", &args.outfile);
-    // printf("&args.width = %lu\n", &args.width);
-    // printf("&args.height = %lu\n", &args.height);
+    printf("&args = %lu\n", &args);
+    printf("&args.outfile = %lu\n", &args.outfile);
+    printf("&args.width = %lu\n", &args.width);
+    printf("&args.height = %lu\n", &args.height);
     parse_args(
         (void*)(&args),
         argc,
