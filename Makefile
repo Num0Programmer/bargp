@@ -9,7 +9,7 @@ all: bargp.o ex
 ex: ppm
 
 ppm: $(EX)/ppm.c
-	cc -I$(INC) $(EX)/ppm.c -o $(PPM_BIN)
+	cc bargp.o -I$(INC) $(EX)/ppm.c -o $(PPM_BIN)
 
 bargp.o: $(INC)/bargp.h $(SRC)/bargp.c
 	cc -c $(SRC)/bargp.c
