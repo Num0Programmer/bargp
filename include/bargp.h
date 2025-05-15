@@ -11,6 +11,7 @@
 // general error
 #define BARGP_FAILURE 1
 #define BARGP_TOO_FEW_ARGUMENTS 60;
+#define BARGP_TOO_MANY_ARGUMENTS 70;
 
 
 enum ArgType {

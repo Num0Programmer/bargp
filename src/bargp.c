@@ -26,7 +26,15 @@ int parse_args(
         const char** argv,
         const struct ArgumentDefinition* argdefs
 ) {
-    if (argc - 1 < __count_args(argdefs)) return BARGP_TOO_FEW_ARGUMENTS;
+    size_t nargs = __count_args(argdefs);
+    if (argc - 1 < nargs)
+    {
+        return BARGP_TOO_FEW_ARGUMENTS;
+    }
+    else if (nargs < argc - 1)
+    {
+        return BARGP_TOO_MANY_ARGUMENTS;
+    }
     for (size_t i = 0; i < argc - 1; i += 1)
     {
         switch (argdefs[i].type)
