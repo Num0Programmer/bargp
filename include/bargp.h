@@ -2,6 +2,7 @@
 #define BARGP_H
 
 #include <stdio.h>
+#include <stdlib.h>
 
 
 enum ArgType {
