@@ -31,10 +31,12 @@ int main(int argc, char** argv) {
     if (parse_res < ARG_PARSE_SUCCESS)
     {
         printf("Parsing failed: %d\n", parse_res);
+        goto finish;
     }
     printf("args.outfile = %s\n", args.outfile);
     printf("args.width = %lu\n", args.width);
     printf("args.height = %lu\n", args.height);
 
+finish:
     return parse_res;
 }
