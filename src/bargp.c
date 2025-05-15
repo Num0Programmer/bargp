@@ -4,12 +4,31 @@
 #include "../include/bargp.h"
 
 
+size_t __count_args(const struct ArgumentDefinition* argdefs)
+{
+    size_t i = 0;
+    size_t expected_nargs = 0;
+
+
+    while (argdefs[i].type != 0)
+    {
+        expected_nargs += 1;
+        i += 1;
+    }
+    printf("expected_nargs = %lu\n", expected_nargs);
+
+    return expected_nargs;
+}
+
+
 int parse_args(
         void* args,
         const int argc,
         const char** argv,
         const struct ArgumentDefinition* argdefs
 ) {
+    printf("argc = %d\n", argc);
+    if (argc < __count_args(argdefs)) return BARGP_TOO_FEW_ARGUMENTS;
     for (size_t i = 0; i < argc - 1; i += 1)
     {
         switch (argdefs[i].type)
@@ -24,12 +43,11 @@ int parse_args(
                 *(const char**)(args + (i * 8)) = argv[i + 1];
                 break;
             default:
-                fprintf(stderr, "Did not parse argument #%lu = '%s'!\n", i + 1, argv[i + 1]);
-                return ARG_NOT_PARSED;
+                break;
         }
     }
 
-    return ARG_PARSE_SUCCESS;
+    return BARGP_SUCCESS;
 }
 
 

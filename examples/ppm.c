@@ -7,6 +7,7 @@ const struct ArgumentDefinition argdefs[] = {
     { .name =    "out", .type = STRING },
     { .name =  "width", .type =   LONG },
     { .name = "height", .type =   LONG },
+    0
 };
 
 
@@ -19,7 +20,7 @@ struct Arguments {
 
 int main(int argc, char** argv) {
     struct Arguments args = { 0 };
-    int parse_res = ARG_PARSE_FAILURE;
+    int parse_res = BARGP_SUCCESS;
 
 
     parse_res = parse_args(
@@ -28,7 +29,7 @@ int main(int argc, char** argv) {
         (const char**)(argv),
         (const struct ArgumentDefinition*)(&argdefs)
     );
-    if (parse_res < ARG_PARSE_SUCCESS)
+    if (parse_res != BARGP_SUCCESS)
     {
         printf("Parsing failed: %d\n", parse_res);
         goto finish;
