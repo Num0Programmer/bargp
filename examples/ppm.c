@@ -4,14 +4,14 @@
 
 
 const struct ArgumentDefinition argdefs[] = {
-    { .name = "out", .type = STRING },
-    { .name = "width", .type = LONG },
-    { .name = "height", .type = LONG },
+    { .name =    "out", .type = STRING },
+    { .name =  "width", .type =   LONG },
+    { .name = "height", .type =   LONG },
 };
 
 
 struct Arguments {
-    char* outfile;
+    char*  outfile;
     size_t width;
     size_t height;
 };
