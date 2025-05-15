@@ -15,7 +15,6 @@ size_t __count_args(const struct ArgumentDefinition* argdefs)
         expected_nargs += 1;
         i += 1;
     }
-    printf("expected_nargs = %lu\n", expected_nargs);
 
     return expected_nargs;
 }
@@ -27,8 +26,7 @@ int parse_args(
         const char** argv,
         const struct ArgumentDefinition* argdefs
 ) {
-    printf("argc = %d\n", argc);
-    if (argc < __count_args(argdefs)) return BARGP_TOO_FEW_ARGUMENTS;
+    if (argc - 1 < __count_args(argdefs)) return BARGP_TOO_FEW_ARGUMENTS;
     for (size_t i = 0; i < argc - 1; i += 1)
     {
         switch (argdefs[i].type)
