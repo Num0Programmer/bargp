@@ -19,21 +19,17 @@ struct Arguments {
 
 int main(int argc, char** argv) {
     struct Arguments args;
-    args.outfile = "bullshit.ppm";
-    args.width = 666;
-    args.height = 420;
 
 
-    printf("&args = %lu\n", &args);
-    printf("&args.outfile = %lu\n", &args.outfile);
-    printf("&args.width = %lu\n", &args.width);
-    printf("&args.height = %lu\n", &args.height);
     parse_args(
         (void*)(&args),
         argc,
         (const char**)(argv),
         (const struct ArgumentDefinition*)(&argdefs)
     );
+    printf("args.outfile = %s\n", args.outfile);
+    printf("args.width = %lu\n", args.width);
+    printf("args.height = %lu\n", args.height);
 
     return 0;
 }
