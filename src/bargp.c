@@ -14,8 +14,6 @@ void parse_args(
     {
         switch (argdefs[i].type)
         {
-            case CHAR:
-                break;
             case LONG:
                 *(size_t*)(args + (i * 8)) = strtol(argv[i + 1], NULL, 10);
                 break;

@@ -6,8 +6,7 @@
 
 
 enum ArgType {
-    CHAR = 0,
-    LONG,
+    LONG = 0,
     DOUBLE,
     STRING,
     NARG_TYPES  // tracks the number of argument types - should always remain at the end
