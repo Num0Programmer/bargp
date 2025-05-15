@@ -5,9 +5,13 @@
 #include <stdlib.h>
 
 
-enum ArgumentParseError {
-    ARG_NOT_PARSED = -255,
-};
+/* Codes for identifying parse failure */
+#define ARG_NOT_PARSED -255
+
+// general error
+#define ARG_PARSE_FAILURE -1
+
+#define ARG_PARSE_SUCCESS 0
 
 
 enum ArgType {
@@ -24,7 +28,7 @@ struct ArgumentDefinition {
 };
 
 
-enum ArgumentParseError parse_args(
+int parse_args(
     void* args,
     const int argc,
     const char** argv,

@@ -19,17 +19,22 @@ struct Arguments {
 
 int main(int argc, char** argv) {
     struct Arguments args = { 0 };
+    int parse_res = ARG_PARSE_FAILURE;
 
 
-    parse_args(
+    parse_res = parse_args(
         (void*)(&args),
         argc,
         (const char**)(argv),
         (const struct ArgumentDefinition*)(&argdefs)
     );
+    if (parse_res < ARG_PARSE_SUCCESS)
+    {
+        printf("Parsing failed: %d\n", parse_res);
+    }
     printf("args.outfile = %s\n", args.outfile);
     printf("args.width = %lu\n", args.width);
     printf("args.height = %lu\n", args.height);
 
-    return 0;
+    return parse_res;
 }

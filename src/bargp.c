@@ -4,15 +4,12 @@
 #include "../include/bargp.h"
 
 
-enum ArgumentParseError parse_args(
+int parse_args(
         void* args,
         const int argc,
         const char** argv,
         const struct ArgumentDefinition* argdefs
 ) {
-    enum ArgumentParseError res;
-
-
     for (size_t i = 0; i < argc - 1; i += 1)
     {
         switch (argdefs[i].type)
@@ -28,11 +25,11 @@ enum ArgumentParseError parse_args(
                 break;
             default:
                 fprintf(stderr, "Did not parse argument #%lu = '%s'!\n", i + 1, argv[i + 1]);
-                break;
+                return ARG_NOT_PARSED;
         }
     }
 
-    return res;
+    return ARG_PARSE_SUCCESS;
 }
 
 
