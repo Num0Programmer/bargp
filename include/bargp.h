@@ -5,11 +5,16 @@
 #include <stdlib.h>
 
 
+enum ArgumentParseError {
+    ARG_NOT_PARSED = -255,
+};
+
+
 enum ArgType {
     LONG = 0,
     DOUBLE,
     STRING,
-    NARG_TYPES  // tracks the number of argument types - should always remain at the end
+    NARG_TYPES,  // tracks the number of argument types - should always remain at the end
 };
 
 
@@ -19,7 +24,7 @@ struct ArgumentDefinition {
 };
 
 
-void parse_args(
+enum ArgumentParseError parse_args(
     void* args,
     const int argc,
     const char** argv,
