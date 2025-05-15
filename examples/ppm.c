@@ -19,6 +19,7 @@ struct Arguments {
 
 int main(int argc, char** argv) {
     struct Arguments args;
+    args.outfile = "bullshit.ppm";
 
 
     // printf("&args = %lu\n", &args);

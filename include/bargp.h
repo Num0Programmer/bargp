@@ -1,6 +1,8 @@
 #ifndef BARGP_H
 #define BARGP_H
 
+#include <stdio.h>
+
 
 enum ArgType {
     CHAR = 0,

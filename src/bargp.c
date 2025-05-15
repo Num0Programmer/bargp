@@ -10,6 +10,7 @@ void parse_args(
     const char** argv,
     const struct ArgumentDefinition* argdefs
 ) {
+    printf("args.outfile = %s\n", *(char**)(args));
 }
 
 
