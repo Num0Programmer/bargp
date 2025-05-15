@@ -21,7 +21,16 @@ int main(int argc, char** argv) {
     struct Arguments args;
 
 
-    parse_args(&args, argc, (const char**)(argv), (const struct ArgumentDefinition*)(&argdefs));
+    printf("&args = %lu\n", &args);
+    printf("&args.outfile = %lu\n", &args.outfile);
+    printf("&args.width = %lu\n", &args.width);
+    printf("&args.height = %lu\n", &args.height);
+    // parse_args(
+    //     (void*)(&args),
+    //     argc,
+    //     (const char**)(argv),
+    //     (const struct ArgumentDefinition*)(&argdefs)
+    // );
 
     return 0;
 }
