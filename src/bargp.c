@@ -22,7 +22,7 @@ void parse_args(
             case DOUBLE:
                 break;
             case STRING:
-                *(char**)(args + (i * 8)) = argv[i + 1];
+                *(const char**)(args + (i * 8)) = argv[i + 1];
                 break;
             default:
                 break;
