@@ -18,7 +18,7 @@ struct Arguments {
 
 
 int main(int argc, char** argv) {
-    struct Arguments args;
+    struct Arguments args = { 0 };
 
 
     parse_args(
