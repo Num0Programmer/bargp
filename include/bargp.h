@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 
 /* Codes for identifying parse failure */
@@ -23,6 +24,7 @@ enum ArgType {
 
 
 struct ArgumentDefinition {
+    char key;
     char* name;
     enum ArgType type;
 };
@@ -30,8 +32,11 @@ struct ArgumentDefinition {
 
 struct VTable {
     size_t size;
-    void* values;
+    void** values;
 };
+
+
+size_t get_hash(const struct VTable* vtable, const struct ArgumentDefinition* argdef);
 
 
 int parse_args(
