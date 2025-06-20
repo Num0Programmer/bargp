@@ -28,6 +28,12 @@ struct ArgumentDefinition {
 };
 
 
+struct VTable {
+    size_t size;
+    void* values;
+};
+
+
 int parse_args(
     void* args,
     const int argc,

@@ -11,20 +11,13 @@ const struct ArgumentDefinition argdefs[] = {
 };
 
 
-struct Arguments {
-    char*  outfile;
-    size_t width;
-    size_t height;
-};
-
-
 int main(int argc, char** argv) {
-    struct Arguments args = { 0 };
     int parse_res = BARGP_SUCCESS;
+    struct VTable vtable;
 
 
     parse_res = parse_args(
-        (void*)(&args),
+        &vtable,
         argc,
         (const char**)(argv),
         (const struct ArgumentDefinition*)(&argdefs)
@@ -34,9 +27,9 @@ int main(int argc, char** argv) {
         printf("Parsing failed: %d\n", parse_res);
         goto finish;
     }
-    printf("args.outfile = %s\n", args.outfile);
-    printf("args.width = %lu\n", args.width);
-    printf("args.height = %lu\n", args.height);
+    // printf("args.outfile = %s\n", args.outfile);
+    // printf("args.width = %lu\n", args.width);
+    // printf("args.height = %lu\n", args.height);
 
 finish:
     return parse_res;
