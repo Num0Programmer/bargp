@@ -21,12 +21,14 @@ size_t __count_args(const struct ArgumentDefinition* argdefs)
 
 
 int parse_args(
-        void* args,
+        struct VTable* vtable,
         const int argc,
         const char** argv,
         const struct ArgumentDefinition* argdefs
 ) {
     size_t nargs = __count_args(argdefs);
+
+
     if (argc - 1 < nargs)
     {
         return BARGP_TOO_FEW_ARGUMENTS;
@@ -35,23 +37,8 @@ int parse_args(
     {
         return BARGP_TOO_MANY_ARGUMENTS;
     }
-    for (size_t i = 0; i < argc - 1; i += 1)
-    {
-        switch (argdefs[i].type)
-        {
-            case LONG:
-                *(size_t*)(args + (i * 8)) = strtol(argv[i + 1], NULL, 10);
-                break;
-            case DOUBLE:
-                *(double*)(args + (i * 8)) = strtod(argv[i + 1], NULL);
-                break;
-            case STRING:
-                *(const char**)(args + (i * 8)) = argv[i + 1];
-                break;
-            default:
-                break;
-        }
-    }
+    vtable->size = nargs;
+    vtable->values = (void*)malloc(sizeof(void*) * nargs);
 
     return BARGP_SUCCESS;
 }

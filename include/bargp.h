@@ -35,7 +35,7 @@ struct VTable {
 
 
 int parse_args(
-    void* args,
+    struct VTable* vtable,
     const int argc,
     const char** argv,
     const struct ArgumentDefinition* argdefs
