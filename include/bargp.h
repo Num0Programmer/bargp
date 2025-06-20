@@ -36,6 +36,12 @@ struct VTable {
 };
 
 
+struct RecvArg {
+    size_t code;
+    char* value;
+};
+
+
 size_t get_hash(const struct VTable* vtable, const struct ArgumentDefinition* argdef);
 
 

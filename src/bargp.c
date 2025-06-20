@@ -43,6 +43,9 @@ int parse_args(
 ) {
     const size_t nargs = __count_args(argdefs);
     size_t tablei;
+    struct RecvArg* shorts;  // values with keys
+    struct RecvArg* longs;  // values with names
+    struct RecvArg* poses;  // positionals
 
 
     if (argc - 1 < nargs)
