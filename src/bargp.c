@@ -20,6 +20,34 @@ size_t __count_args(const struct ArgumentDefinition* argdefs)
 }
 
 
+struct RecvArg* __get_poses(const char** argv, const int argc)
+{
+    size_t n_pos_args = 0;
+    struct RecvArg* poses = NULL;
+
+
+    for (size_t i = argc - 1; i > 0; i -= 1)
+    {
+        if (argv[i - 1][0] != '-')
+        {
+            n_pos_args += 1;
+        }
+        else
+        {
+            break;
+        }
+    }
+    poses = (struct RecvArg*)malloc(sizeof(struct RecvArg) * n_pos_args);
+
+    for (size_t i = 0; i < n_pos_args; i += 1)
+    {
+        poses[i].value = argv[argc - i - 1];
+    }
+
+    return poses;
+}
+
+
 size_t get_hash(const struct VTable* vtable, const struct ArgumentDefinition* argdef)
 {
     const size_t name_len = strlen(argdef->name);
@@ -58,6 +86,8 @@ int parse_args(
     }
     vtable->size = nargs;
     vtable->values = (void**)malloc(sizeof(void*) * nargs);
+
+    poses = __get_poses(argv, argc);
 
     for (size_t i = 0; i < argc - 1; i += 1)
     {
