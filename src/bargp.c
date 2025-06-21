@@ -41,7 +41,9 @@ void __get_poses(struct RecvArgs* poses, const char** argv, const int argc)
 
     for (size_t i = 0; i < n_pos_args; i += 1)
     {
-        poses->values[n_pos_args - i - 1] = argv[argc - i - 1];
+        poses->values[n_pos_args - i - 1] =
+            (void*)malloc(sizeof(char) * strlen(argv[argc - i - 1]));
+        strcpy(poses->values[n_pos_args - i - 1], argv[argc - i - 1]);
     }
 }
 
@@ -113,6 +115,7 @@ int parse_args(
                 *(double*)vtable->values[tablei] = strtod(poses.values[i], NULL);
                 break;
             case STRING:
+                vtable->values[tablei] = (void*)malloc(sizeof(char) * strlen(poses.values[i]));
                 vtable->values[tablei] = poses.values[i];
                 break;
         }
