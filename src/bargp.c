@@ -36,6 +36,7 @@ void __get_poses(struct RecvArgs* poses, const char** argv, const int argc)
             break;
         }
     }
+    poses->size = n_pos_args;
     poses->values = (char**)malloc(sizeof(char*) * n_pos_args);
 
     for (size_t i = 0; i < n_pos_args; i += 1)
@@ -68,9 +69,9 @@ int parse_args(
 ) {
     const size_t nargs = __count_args(argdefs);
     size_t tablei;
-    struct RecvArgs shorts;  // values with keys
-    struct RecvArgs longs;  // values with names
-    struct RecvArgs poses;  // positionals
+    struct RecvArgs shorts = { 0 };  // values with keys
+    struct RecvArgs longs = { 0 };  // values with names
+    struct RecvArgs poses = { 0 };  // positionals
 
 
     if (argc - 1 < nargs)
