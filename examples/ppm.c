@@ -12,21 +12,21 @@ const struct ArgumentDefinition argdefs[] = {
 
 
 int main(int argc, char** argv) {
-    const size_t nargs = count_args(argdefs);
+    const size_t n_args = count_args(argdefs);
     int parse_res = BARGP_SUCCESS;
     struct VTable vtable;
 
 
-    if (argc - 1 < nargs)
+    if (argc - 1 < n_args)
     {
         return BARGP_TOO_FEW_ARGUMENTS;
     }
-    else if (nargs < argc - 1)
+    else if (n_args < argc - 1)
     {
         return BARGP_TOO_MANY_ARGUMENTS;
     }
 
-    vtable_create(&vtable, nargs);
+    vtable_create(&vtable, n_args);
     parse_res = parse_args(
         &vtable,
         argc,
