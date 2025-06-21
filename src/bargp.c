@@ -105,8 +105,10 @@ int parse_args(
         switch (argdefs[i].type)
         {
             case LONG:
+                vtable->values[tablei] = strtol(poses.values[i], NULL, 10);
                 break;
             case DOUBLE:
+                vtable->values[tablei] = strtod(poses.values[i], NULL);
                 break;
             case STRING:
                 vtable->values[tablei] = poses.values[i];
