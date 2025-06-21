@@ -105,10 +105,12 @@ int parse_args(
         switch (argdefs[i].type)
         {
             case LONG:
-                vtable->values[tablei] = strtol(poses.values[i], NULL, 10);
+                vtable->values[tablei] = (void*)malloc(sizeof(long));
+                *(long*)vtable->values[tablei] = strtol(poses.values[i], NULL, 10);
                 break;
             case DOUBLE:
-                vtable->values[tablei] = strtod(poses.values[i], NULL);
+                vtable->values[tablei] = (void*)malloc(sizeof(double));
+                *(double*)vtable->values[tablei] = strtod(poses.values[i], NULL);
                 break;
             case STRING:
                 vtable->values[tablei] = poses.values[i];
