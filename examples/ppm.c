@@ -36,12 +36,14 @@ int main(int argc, char** argv) {
     if (parse_res != BARGP_SUCCESS)
     {
         printf("Parsing failed: %d\n", parse_res);
-        goto finish;
+        goto exit;
     }
     printf("outfile = %s\n", (char*)get_arg(&vtable, &argdefs[0]));
     printf("width = %lu\n", *(unsigned long*)get_arg(&vtable, &argdefs[1]));
     printf("height = %lu\n", *(unsigned long*)get_arg(&vtable, &argdefs[2]));
 
-finish:
+exit:
+    vtable_destroy(&vtable);
+
     return parse_res;
 }

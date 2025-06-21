@@ -63,4 +63,7 @@ int parse_args(
 void vtable_create(struct VTable* vtable, const size_t size);
 
 
+void vtable_destroy(struct VTable* vtable);
+
+
 #endif  /* BARGP_H */

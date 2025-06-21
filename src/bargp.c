@@ -138,4 +138,14 @@ void vtable_create(struct VTable* vtable, const size_t size)
 }
 
 
+void vtable_destroy(struct VTable* vtable)
+{
+    for (size_t i = 0; i < vtable->size; i += 1)
+    {
+        free(vtable->values[i]);
+    }
+    free(vtable->values);
+}
+
+
 #endif  /* BARGP_C */
