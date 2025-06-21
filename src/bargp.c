@@ -86,12 +86,6 @@ int parse_args(
     vtable->values = (void**)malloc(sizeof(void*) * nargs);
 
     __get_poses(&poses, argv, argc);
-    printf("Positional arguments (size=%lu) = { %s", poses.size, poses.values[0]);
-    for (size_t i = 1; i < poses.size; i += 1)
-    {
-        printf(", %s", poses.values[i]);
-    }
-    printf(" }\n");
 
     for (size_t i = 0; i < argc - 1; i += 1)
     {
