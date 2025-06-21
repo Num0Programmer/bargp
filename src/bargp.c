@@ -116,11 +116,29 @@ int parse_args(
                 break;
             case STRING:
                 vtable->values[tablei] = (void*)malloc(sizeof(char) * strlen(poses.values[i]));
-                vtable->values[tablei] = poses.values[i];
+                strcpy(vtable->values[tablei], poses.values[i]);
                 break;
         }
     }
 
+    for (size_t i = 0; i < shorts.size; i += 1)
+    {
+        free(shorts.values[i]);
+    }
+    free(shorts.values);
+    free(shorts.codes);
+    for (size_t i = 0; i < longs.size; i += 1)
+    {
+        free(longs.values[i]);
+    }
+    free(longs.values);
+    free(longs.codes);
+    for (size_t i = 0; i < poses.size; i += 1)
+    {
+        free(poses.values[i]);
+    }
+    free(poses.values);
+    free(poses.codes);
     return BARGP_SUCCESS;
 }
 
