@@ -43,6 +43,9 @@ struct RecvArgs {
 };
 
 
+size_t count_args(const struct ArgumentDefinition* argdefs);
+
+
 void* get_arg(const struct VTable* vtable, const struct ArgumentDefinition* argdef);
 
 
@@ -55,6 +58,9 @@ int parse_args(
     const char** argv,
     const struct ArgumentDefinition* argdefs
 );
+
+
+void vtable_create(struct VTable* vtable, const size_t size);
 
 
 #endif  /* BARGP_H */

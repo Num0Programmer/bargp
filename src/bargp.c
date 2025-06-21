@@ -4,22 +4,6 @@
 #include "../include/bargp.h"
 
 
-size_t __count_args(const struct ArgumentDefinition* argdefs)
-{
-    size_t i = 0;
-    size_t expected_nargs = 0;
-
-
-    while (argdefs[i].type != 0)
-    {
-        expected_nargs += 1;
-        i += 1;
-    }
-
-    return expected_nargs;
-}
-
-
 void __get_poses(struct RecvArgs* poses, const char** argv, const int argc)
 {
     size_t n_pos_args = 0;
@@ -45,6 +29,22 @@ void __get_poses(struct RecvArgs* poses, const char** argv, const int argc)
             (void*)malloc(sizeof(char) * strlen(argv[argc - i - 1]));
         strcpy(poses->values[n_pos_args - i - 1], argv[argc - i - 1]);
     }
+}
+
+
+size_t count_args(const struct ArgumentDefinition* argdefs)
+{
+    size_t i = 0;
+    size_t expected_nargs = 0;
+
+
+    while (argdefs[i].type != 0)
+    {
+        expected_nargs += 1;
+        i += 1;
+    }
+
+    return expected_nargs;
 }
 
 
@@ -78,24 +78,12 @@ int parse_args(
         const char** argv,
         const struct ArgumentDefinition* argdefs
 ) {
-    const size_t nargs = __count_args(argdefs);
     size_t tablei;
     size_t n_args_parsed = 0;
     struct RecvArgs shorts = { 0 };  // values with keys
     struct RecvArgs longs = { 0 };  // values with names
     struct RecvArgs poses = { 0 };  // positionals
 
-
-    if (argc - 1 < nargs)
-    {
-        return BARGP_TOO_FEW_ARGUMENTS;
-    }
-    else if (nargs < argc - 1)
-    {
-        return BARGP_TOO_MANY_ARGUMENTS;
-    }
-    vtable->size = nargs;
-    vtable->values = (void**)malloc(sizeof(void*) * nargs);
 
     __get_poses(&poses, argv, argc);
 
@@ -140,6 +128,13 @@ int parse_args(
     free(poses.values);
     free(poses.codes);
     return BARGP_SUCCESS;
+}
+
+
+void vtable_create(struct VTable* vtable, const size_t size)
+{
+    vtable->size = size;
+    vtable->values = (void**)malloc(sizeof(void*) * size);
 }
 
 
