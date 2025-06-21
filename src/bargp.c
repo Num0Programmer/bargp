@@ -20,10 +20,9 @@ size_t __count_args(const struct ArgumentDefinition* argdefs)
 }
 
 
-struct RecvArg* __get_poses(const char** argv, const int argc)
+void __get_poses(struct RecvArgs* poses, const char** argv, const int argc)
 {
     size_t n_pos_args = 0;
-    struct RecvArg* poses = NULL;
 
 
     for (size_t i = argc - 1; i > 0; i -= 1)
@@ -37,14 +36,12 @@ struct RecvArg* __get_poses(const char** argv, const int argc)
             break;
         }
     }
-    poses = (struct RecvArg*)malloc(sizeof(struct RecvArg) * n_pos_args);
+    poses->values = (char**)malloc(sizeof(char*) * n_pos_args);
 
     for (size_t i = 0; i < n_pos_args; i += 1)
     {
-        poses[i].value = argv[argc - i - 1];
+        poses->values[i] = argv[argc - i - 1];
     }
-
-    return poses;
 }
 
 
@@ -71,9 +68,9 @@ int parse_args(
 ) {
     const size_t nargs = __count_args(argdefs);
     size_t tablei;
-    struct RecvArg* shorts;  // values with keys
-    struct RecvArg* longs;  // values with names
-    struct RecvArg* poses;  // positionals
+    struct RecvArgs shorts;  // values with keys
+    struct RecvArgs longs;  // values with names
+    struct RecvArgs poses;  // positionals
 
 
     if (argc - 1 < nargs)
@@ -87,7 +84,13 @@ int parse_args(
     vtable->size = nargs;
     vtable->values = (void**)malloc(sizeof(void*) * nargs);
 
-    poses = __get_poses(argv, argc);
+    __get_poses(&poses, argv, argc);
+    printf("Positional arguments (size=%lu) = { %s", poses.size, poses.values[0]);
+    for (size_t i = 1; i < poses.size; i += 1)
+    {
+        printf(", %s", poses.values[i]);
+    }
+    printf(" }\n");
 
     for (size_t i = 0; i < argc - 1; i += 1)
     {

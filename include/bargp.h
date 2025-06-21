@@ -36,9 +36,10 @@ struct VTable {
 };
 
 
-struct RecvArg {
-    size_t code;
-    char* value;
+struct RecvArgs {
+    size_t size;
+    size_t* codes;
+    char** values;
 };
 
 
