@@ -41,7 +41,7 @@ void __get_poses(struct RecvArgs* poses, const char** argv, const int argc)
 
     for (size_t i = 0; i < n_pos_args; i += 1)
     {
-        poses->values[i] = argv[argc - i - 1];
+        poses->values[n_pos_args - i - 1] = argv[argc - i - 1];
     }
 }
 
