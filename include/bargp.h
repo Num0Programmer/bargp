@@ -43,6 +43,9 @@ struct RecvArgs {
 };
 
 
+void* get_arg(const struct VTable* vtable, const struct ArgumentDefinition* argdef);
+
+
 size_t get_hash(const struct VTable* vtable, const struct ArgumentDefinition* argdef);
 
 

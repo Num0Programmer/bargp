@@ -46,6 +46,15 @@ void __get_poses(struct RecvArgs* poses, const char** argv, const int argc)
 }
 
 
+void* get_arg(const struct VTable* vtable, const struct ArgumentDefinition* argdef)
+{
+    const size_t tablei = get_hash(vtable, argdef);
+
+
+    return vtable->values[tablei];
+}
+
+
 size_t get_hash(const struct VTable* vtable, const struct ArgumentDefinition* argdef)
 {
     const size_t name_len = strlen(argdef->name);
@@ -69,6 +78,7 @@ int parse_args(
 ) {
     const size_t nargs = __count_args(argdefs);
     size_t tablei;
+    size_t n_args_parsed = 0;
     struct RecvArgs shorts = { 0 };  // values with keys
     struct RecvArgs longs = { 0 };  // values with names
     struct RecvArgs poses = { 0 };  // positionals
@@ -87,8 +97,10 @@ int parse_args(
 
     __get_poses(&poses, argv, argc);
 
-    for (size_t i = 0; i < argc - 1; i += 1)
+    // parse positional arguments
+    for (size_t i = 0; i < poses.size; i += 1)
     {
+        // TODO: will have to add the number of short and long flag arguments
         tablei = get_hash(vtable, &argdefs[i]);
         switch (argdefs[i].type)
         {
@@ -97,6 +109,7 @@ int parse_args(
             case DOUBLE:
                 break;
             case STRING:
+                vtable->values[tablei] = poses.values[i];
                 break;
         }
     }

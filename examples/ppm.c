@@ -27,9 +27,9 @@ int main(int argc, char** argv) {
         printf("Parsing failed: %d\n", parse_res);
         goto finish;
     }
-    // printf("args.outfile = %s\n", args.outfile);
-    // printf("args.width = %lu\n", args.width);
-    // printf("args.height = %lu\n", args.height);
+    printf("args.outfile = %s\n", get_arg(&vtable, &argdefs[0]));
+    // printf("args.width = %lu\n", get_value(vtable, &argdefs[1]));
+    // printf("args.height = %lu\n", get_value(vtable, &argdefs[2]));
 
 finish:
     return parse_res;
