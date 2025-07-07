@@ -32,7 +32,12 @@ int main(int argc, char** argv) {
     }
     else if (total_args - n_opt_args < argc - 1 - n_opt_args)
     {
-        fprintf(stderr, "Too many arguments! Expected %lu, but received %d\n", total_args - n_opt_args, argc - 1);
+        fprintf(
+            stderr,
+            "Too many arguments! Expected %lu, but received %d\n",
+            total_args - n_opt_args,
+            argc - 1
+        );
         return BARGP_TOO_MANY_ARGUMENTS;
     }
 
