@@ -44,7 +44,7 @@ struct RecvArgs {
 };
 
 
-size_t count_args(const struct ArgumentDefinition* argdefs);
+void count_args(size_t* total_args, size_t* n_opt_args, const struct ArgumentDefinition* argdefs);
 
 
 void* get_arg(const struct VTable* vtable, const struct ArgumentDefinition* argdef);

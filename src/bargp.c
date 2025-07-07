@@ -58,19 +58,22 @@ void __get_poses(struct RecvArgs* poses, const char** argv, const int argc)
 }
 
 
-size_t count_args(const struct ArgumentDefinition* argdefs)
+void count_args(size_t* total_args, size_t* n_opt_args, const struct ArgumentDefinition* argdefs)
 {
     size_t i = 0;
-    size_t expected_n_args = 0;
+    *total_args = 0;
+    *n_opt_args = 0;
 
 
-    while (argdefs[i].type != 0)
+    while(argdefs[i].type != 0)
     {
-        expected_n_args += 1;
+        *total_args += 1;
+        if (argdefs[i].is_optional)
+        {
+            *n_opt_args += 1;
+        }
         i += 1;
     }
-
-    return expected_n_args;
 }
 
 
