@@ -20,10 +20,12 @@ int main(int argc, char** argv) {
 
     if (argc - 1 < n_args)
     {
+        fprintf(stderr, "Too few arguments! Expected %lu, but received %d\n", n_args, argc);
         return BARGP_TOO_FEW_ARGUMENTS;
     }
     else if (n_args < argc - 1)
     {
+        fprintf(stderr, "Too many arguments! Expected %lu, but received %d\n", n_args, argc);
         return BARGP_TOO_MANY_ARGUMENTS;
     }
 
