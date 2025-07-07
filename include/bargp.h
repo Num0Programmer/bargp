@@ -26,6 +26,7 @@ enum ArgType {
 struct ArgumentDefinition {
     char key;
     char* name;
+    bool is_optional;
     enum ArgType type;
 };
 
