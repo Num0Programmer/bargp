@@ -67,7 +67,7 @@ size_t count_args(const struct ArgumentDefinition* argdefs)
     size_t expected_n_args = 0;
 
 
-    while (argdefs[i].type != 0)
+    while (argdefs[i].type != 0 && !argdefs[i].is_optional)
     {
         expected_n_args += 1;
         i += 1;
