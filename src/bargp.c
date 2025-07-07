@@ -4,6 +4,35 @@
 #include "../include/bargp.h"
 
 
+void __get_longs(struct RecvArgs* longs, const char** argv, const int argc)
+{
+    size_t i = 0;
+    size_t n_long_args = 0;
+
+
+    for (i = 1; i < argc; i += 1)
+    {
+        if (argv[i][0] == '-' && argv[i][1] == '-')
+        {
+            n_long_args += 1;
+        }
+    }
+    longs->size = n_long_args;
+    longs->values = (char**)malloc(sizeof(char*) * n_long_args);
+
+    i = 0;
+    while (i < n_long_args)
+    {
+        if (argv[i][0] == '-' && argv[i][1] == '-')
+        {
+            longs->values[i] = (char*)malloc(sizeof(char) * strlen(argv[i]));
+            strcpy(longs->values[i], argv[i]);
+            i += 1;
+        }
+    }
+}
+
+
 void __get_poses(struct RecvArgs* poses, const char** argv, const int argc)
 {
     size_t n_pos_args = 0;
@@ -86,6 +115,7 @@ int parse_args(
 
 
     __get_poses(&poses, argv, argc);
+    __get_longs(&longs, argv, argc);
 
     // parse positional arguments
     for (size_t i = 0; i < poses.size; i += 1)
