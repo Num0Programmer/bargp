@@ -161,10 +161,10 @@ int parse_args(
 }
 
 
-void vtable_create(struct VTable* vtable, const size_t size)
+void vtable_create(struct VTable* vtable)
 {
-    vtable->size = size;
-    vtable->values = (void**)malloc(sizeof(void*) * size);
+    vtable->size = BARGP_MAX_NAME_LEN * BARGP_N_CHARS_ALPHA;
+    vtable->values = (void**)malloc(sizeof(void*) * vtable->size);
 }
 
 

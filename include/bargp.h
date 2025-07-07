@@ -9,10 +9,14 @@
 
 /* Codes for identifying parse failure */
 #define BARGP_SUCCESS 0
-// general error
+// general error codes
 #define BARGP_FAILURE 1
 #define BARGP_TOO_FEW_ARGUMENTS 60;
 #define BARGP_TOO_MANY_ARGUMENTS 70;
+
+/* Hash table construction */
+#define BARGP_MAX_NAME_LEN 64
+#define BARGP_N_CHARS_ALPHA 27  // every letter [a-z][A-Z] and '-'
 
 
 enum ArgType {
@@ -61,7 +65,7 @@ int parse_args(
 );
 
 
-void vtable_create(struct VTable* vtable, const size_t size);
+void vtable_create(struct VTable* vtable);
 
 
 void vtable_destroy(struct VTable* vtable);

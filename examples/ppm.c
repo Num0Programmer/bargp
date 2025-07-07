@@ -41,7 +41,7 @@ int main(int argc, char** argv) {
         return BARGP_TOO_MANY_ARGUMENTS;
     }
 
-    vtable_create(&vtable, total_args);
+    vtable_create(&vtable);
     parse_res = parse_args(
         &vtable,
         argc,
