@@ -6,11 +6,10 @@
 
 void __get_longs(struct RecvArgs* longs, const char** argv, const int argc)
 {
-    size_t i = 0;
     size_t n_long_args = 0;
 
 
-    for (i = 1; i < argc; i += 1)
+    for (size_t i = 1; i < argc; i += 1)
     {
         if (argv[i][0] == '-' && argv[i][1] == '-')
         {
@@ -20,14 +19,12 @@ void __get_longs(struct RecvArgs* longs, const char** argv, const int argc)
     longs->size = n_long_args;
     longs->values = (char**)malloc(sizeof(char*) * n_long_args);
 
-    i = 0;
-    while (i < n_long_args)
+    for (size_t i = 0; i < argc; i += 1)
     {
         if (argv[i][0] == '-' && argv[i][1] == '-')
         {
             longs->values[i] = (char*)malloc(sizeof(char) * strlen(argv[i]));
             strcpy(longs->values[i], argv[i]);
-            i += 1;
         }
     }
 }
@@ -67,7 +64,7 @@ size_t count_args(const struct ArgumentDefinition* argdefs)
     size_t expected_n_args = 0;
 
 
-    while (argdefs[i].type != 0 && !argdefs[i].is_optional)
+    while (argdefs[i].type != 0)
     {
         expected_n_args += 1;
         i += 1;
