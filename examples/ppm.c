@@ -38,7 +38,7 @@ int main(int argc, char** argv) {
     );
     if (parse_res != BARGP_SUCCESS)
     {
-        printf("Parsing failed: %d\n", parse_res);
+        fprintf(stderr, "Parsing failed: %d\n", parse_res);
         goto exit;
     }
     printf("outfile = %s\n", (char*)get_arg(&vtable, &argdefs[0]));
