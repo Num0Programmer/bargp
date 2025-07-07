@@ -109,9 +109,9 @@ int parse_args(
 ) {
     size_t tablei;
     size_t n_args_parsed = 0;
+    struct RecvArgs poses  = { 0 };  // positionals
+    struct RecvArgs longs  = { 0 };  // values with names
     struct RecvArgs shorts = { 0 };  // values with keys
-    struct RecvArgs longs = { 0 };  // values with names
-    struct RecvArgs poses = { 0 };  // positionals
 
 
     __get_poses(&poses, argv, argc);

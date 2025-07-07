@@ -56,6 +56,7 @@ int main(int argc, char** argv) {
     printf("outfile = %s\n", (char*)get_arg(&vtable, &argdefs[0]));
     printf("width = %lu\n", *(unsigned long*)get_arg(&vtable, &argdefs[1]));
     printf("height = %lu\n", *(unsigned long*)get_arg(&vtable, &argdefs[2]));
+    printf("bg-color = %lu\n", *(unsigned long*)get_arg(&vtable, &argdefs[3]));
 
 exit:
     vtable_destroy(&vtable);
