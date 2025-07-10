@@ -37,7 +37,7 @@ void __get_poses(struct RecvArgs* poses, const char** argv, const int argc)
 
     for (size_t i = argc - 1; i > 0; i -= 1)
     {
-        if (argv[i - 1][0] != '-')
+        if (strstr(argv[i], "=") == NULL)
         {
             n_pos_args += 1;
         }
