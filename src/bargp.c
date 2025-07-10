@@ -11,7 +11,7 @@ void __get_longs(struct RecvArgs* longs, const char** argv, const int argc)
 
     for (size_t i = 1; i < argc; i += 1)
     {
-        if (argv[i][0] == '-' && argv[i][1] == '-')
+        if (strstr(argv[i], "=") != NULL)
         {
             n_long_args += 1;
         }
@@ -21,7 +21,7 @@ void __get_longs(struct RecvArgs* longs, const char** argv, const int argc)
 
     for (size_t i = 0; i < argc; i += 1)
     {
-        if (argv[i][0] == '-' && argv[i][1] == '-')
+        if (strstr(argv[i], "=") != NULL)
         {
             longs->values[i] = (char*)malloc(sizeof(char) * strlen(argv[i]));
             strcpy(longs->values[i], argv[i]);
@@ -115,7 +115,7 @@ int parse_args(
 
 
     __get_poses(&poses, argv, argc);
-    __get_longs(&longs, argv, argc);
+    // __get_longs(&longs, argv, argc);
 
     // parse positional arguments
     for (size_t i = 0; i < poses.size; i += 1)
