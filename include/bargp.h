@@ -41,13 +41,6 @@ struct VTable {
 };
 
 
-struct RecvArgs {
-    size_t size;
-    size_t* codes;
-    char** values;
-};
-
-
 void count_args(size_t* total_args, size_t* n_opt_args, const struct ArgumentDefinition* argdefs);
 
 
