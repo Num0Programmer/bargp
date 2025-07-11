@@ -57,13 +57,7 @@ void* get_arg(const struct VTable* vtable, const struct ArgumentDefinition* argd
 size_t get_hash(const struct VTable* vtable, const struct ArgumentDefinition* argdef);
 
 
-int parse_args(
-    struct VTable* vtable,
-    const int argc,
-    const char** argv,
-    const size_t total_args,
-    const struct ArgumentDefinition* argdefs
-);
+int parse_args(struct VTable* vtable, const int argc, const char** argv);
 
 
 void vtable_create(

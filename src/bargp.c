@@ -47,13 +47,8 @@ size_t get_hash(const struct VTable* vtable, const struct ArgumentDefinition* ar
 }
 
 
-int parse_args(
-        struct VTable* vtable,
-        const int argc,
-        const char** argv,
-        const size_t total_args,
-        const struct ArgumentDefinition* argdefs
-) {
+int parse_args(struct VTable* vtable, const int argc, const char** argv)
+{
     size_t tablei;
 
 
