@@ -28,7 +28,7 @@ void* get_arg(const struct VTable* vtable, const struct ArgumentDefinition* argd
     const size_t tablei = get_hash(vtable, argdef);
 
 
-    return vtable->values[tablei];
+    return vtable->table[tablei].value;
 }
 
 
@@ -54,29 +54,7 @@ int parse_args(
         const struct ArgumentDefinition* argdefs
 ) {
     size_t tablei;
-    size_t n_args_parsed = 0;
 
-    // parse positional arguments
-    for (size_t i = 0; i < argc; i += 1)
-    {
-        // TODO: will have to add the number of short and long flag arguments
-        tablei = get_hash(vtable, &argdefs[i]);
-        switch (argdefs[i].type)
-        {
-            case LONG:
-                vtable->values[tablei] = (void*)malloc(sizeof(long));
-                *(long*)vtable->values[tablei] = strtol(argv[i], NULL, 10);
-                break;
-            case DOUBLE:
-                vtable->values[tablei] = (void*)malloc(sizeof(double));
-                *(double*)vtable->values[tablei] = strtod(argv[i], NULL);
-                break;
-            case STRING:
-                vtable->values[tablei] = (void*)malloc(sizeof(char) * strlen(argv[i]));
-                strcpy(vtable->values[tablei], argv[i]);
-                break;
-        }
-    }
 
     return BARGP_SUCCESS;
 }
@@ -85,7 +63,7 @@ int parse_args(
 void vtable_create(struct VTable* vtable)
 {
     vtable->size = BARGP_MAX_NAME_LEN * BARGP_N_CHARS_ALPHA;
-    vtable->values = (void**)malloc(sizeof(void*) * vtable->size);
+    vtable->table = (struct ArgDefToValue*)malloc(sizeof(struct ArgDefToValue*) * vtable->size);
 }
 
 
@@ -93,9 +71,9 @@ void vtable_destroy(struct VTable* vtable)
 {
     for (size_t i = 0; i < vtable->size; i += 1)
     {
-        free(vtable->values[i]);
+        free(vtable->table[i].value);
     }
-    free(vtable->values);
+    free(vtable->table);
 }
 
 

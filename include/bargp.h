@@ -35,9 +35,16 @@ struct ArgumentDefinition {
 };
 
 
+struct ArgDefToValue
+{
+    struct ArgumentDefinition* argdef;
+    void* value;
+};
+
+
 struct VTable {
     size_t size;
-    void** values;
+    struct ArgDefToValue* table;
 };
 
 
