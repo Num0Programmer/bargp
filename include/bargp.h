@@ -37,7 +37,7 @@ struct ArgumentDefinition {
 
 struct ArgDefToValue
 {
-    struct ArgumentDefinition* argdef;
+    const struct ArgumentDefinition* argdef;
     void* value;
 };
 
@@ -66,7 +66,11 @@ int parse_args(
 );
 
 
-void vtable_create(struct VTable* vtable);
+void vtable_create(
+    struct VTable* vtable,
+    const size_t total_args,
+    const struct ArgumentDefinition* argdefs
+);
 
 
 void vtable_destroy(struct VTable* vtable);

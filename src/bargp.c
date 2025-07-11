@@ -61,10 +61,21 @@ int parse_args(
 }
 
 
-void vtable_create(struct VTable* vtable)
-{
+void vtable_create(
+        struct VTable* vtable,
+        const size_t total_args,
+        const struct ArgumentDefinition* argdefs
+) {
+    size_t tablei;
+
+
     vtable->size = BARGP_MAX_NAME_LEN * BARGP_N_CHARS_ALPHA;
     vtable->table = (struct ArgDefToValue*)malloc(sizeof(struct ArgDefToValue*) * vtable->size);
+    for (size_t i = 0; i < total_args; i += 1)
+    {
+        tablei = get_hash(vtable, &argdefs[i]);
+        vtable->table[tablei].argdef = &argdefs[i];
+    }
 }
 
 
