@@ -4,6 +4,31 @@
 #include "../include/bargp.h"
 
 
+void* __resolve_type(const char* value, const struct ArgumentDefinition* argdef)
+{
+    void* alloc = NULL;
+
+
+    switch(argdef->type)
+    {
+        case LONG:
+            alloc = (void*)malloc(sizeof(double));
+            *(long*)alloc = strtol(value, NULL, 10);
+            break;
+        case DOUBLE:
+            alloc = (void*)malloc(sizeof(double));
+            *(double*)alloc = strtod(value, NULL);
+            break;
+        case STRING:
+            alloc = (void*)malloc(sizeof(char*) * strlen(value));
+            strcpy(alloc, value);
+            break;
+    }
+
+    return alloc;
+}
+
+
 void count_args(size_t* total_args, size_t* n_opt_args, const struct ArgumentDefinition* argdefs)
 {
     size_t i = 0;
@@ -47,10 +72,60 @@ size_t get_hash(const struct VTable* vtable, const struct ArgumentDefinition* ar
 }
 
 
-int parse_args(struct VTable* vtable, const int argc, const char** argv)
-{
+int parse_args(
+        struct VTable* vtable,
+        const int argc,
+        const char** argv,
+        const size_t total_args,
+        const struct ArgumentDefinition* argdefs
+) {
     size_t tablei;
+    size_t i = 1;
+    size_t statsi = 0;
 
+
+    while (i < argc)
+    {
+        // try optional argument
+        if (argv[i][0] == '-' && argv[i][1] == '-')
+        {
+            for (size_t j = 0; j < total_args; j += 1)
+            {
+                if (argdefs[j].key == argv[i][1])
+                {
+                    tablei = get_hash(vtable, &argdefs[j]);
+                    vtable->opts[tablei].argdef = &argdefs[j];
+                    vtable->opts[tablei].value = __resolve_type(argv[i + 1], &argdefs[j]);
+                }
+            }
+
+            i += 1;
+        }
+        else if (argv[i][0] == '-')
+        {
+            printf("Parsing key flags is not implemented!\n");
+            // for (size_t j = 0; j < total_args; j += 1)
+            // {
+            //     if (argdefs[j].key == argv[i][1])
+            //     {
+            //     }
+            // }
+
+            i += 1;
+        }
+        // try static argument
+        else
+        {
+            printf("Inserting value '%s' for '%s' argument...\n", argv[i], vtable->stats[statsi].argdef->name);
+            vtable->stats[statsi].value = __resolve_type(
+                argv[i],
+                vtable->stats[statsi].argdef
+            );
+            statsi += 1;
+        }
+
+        i += 1;
+    }
 
     return BARGP_SUCCESS;
 }

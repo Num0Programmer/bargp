@@ -43,7 +43,7 @@ int main(int argc, char** argv)
     }
 
     vtable_create(&vtable, total_args, n_opt_args, argdefs);
-    parse_res = parse_args(&vtable, argc, (const char**)(argv));
+    parse_res = parse_args(&vtable, argc, (const char**)(argv), total_args, argdefs);
     if (parse_res != BARGP_SUCCESS)
     {
         fprintf(stderr, "Parsing failed: %d\n", parse_res);

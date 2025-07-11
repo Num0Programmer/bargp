@@ -23,7 +23,6 @@ enum ArgType {
     LONG = 1,
     DOUBLE,
     STRING,
-    NARG_TYPES,  // tracks the number of argument types - should always remain at the end
 };
 
 
@@ -59,7 +58,13 @@ void* get_arg(const struct VTable* vtable, const struct ArgumentDefinition* argd
 size_t get_hash(const struct VTable* vtable, const struct ArgumentDefinition* argdef);
 
 
-int parse_args(struct VTable* vtable, const int argc, const char** argv);
+int parse_args(
+    struct VTable* vtable,
+    const int argc,
+    const char** argv,
+    const size_t total_args,
+    const struct ArgumentDefinition* argdefs
+);
 
 
 void vtable_create(
