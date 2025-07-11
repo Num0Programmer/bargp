@@ -61,6 +61,7 @@ int parse_args(
     struct VTable* vtable,
     const int argc,
     const char** argv,
+    const size_t total_args,
     const struct ArgumentDefinition* argdefs
 );
 

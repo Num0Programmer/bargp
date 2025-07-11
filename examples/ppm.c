@@ -7,7 +7,7 @@ const struct ArgumentDefinition argdefs[] = {
     { .name =      "out", .type = STRING },
     { .name =    "width", .type =   LONG },
     { .name =   "height", .type =   LONG },
-    { .name = "bg-color", .type =   LONG, .is_optional = true },
+    // { .name = "bg-color", .type =   LONG, .is_optional = true },
     0
 };
 
@@ -46,6 +46,7 @@ int main(int argc, char** argv) {
         &vtable,
         argc,
         (const char**)(argv),
+        total_args,
         (const struct ArgumentDefinition*)(&argdefs)
     );
     if (parse_res != BARGP_SUCCESS)
@@ -56,7 +57,7 @@ int main(int argc, char** argv) {
     printf("outfile = %s\n", (char*)get_arg(&vtable, &argdefs[0]));
     printf("width = %lu\n", *(unsigned long*)get_arg(&vtable, &argdefs[1]));
     printf("height = %lu\n", *(unsigned long*)get_arg(&vtable, &argdefs[2]));
-    printf("bg-color = %lu\n", *(unsigned long*)get_arg(&vtable, &argdefs[3]));
+    // printf("bg-color = %lu\n", *(unsigned long*)get_arg(&vtable, &argdefs[3]));
 
 exit:
     vtable_destroy(&vtable);
