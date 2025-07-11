@@ -43,8 +43,10 @@ struct ArgDefToValue
 
 
 struct VTable {
-    size_t size;
-    struct ArgDefToValue* table;
+    size_t n_opts;
+    size_t n_stats;
+    struct ArgDefToValue* opts;   // optional arguments
+    struct ArgDefToValue* stats;  // static 'positional' arguments
 };
 
 
@@ -63,6 +65,7 @@ int parse_args(struct VTable* vtable, const int argc, const char** argv);
 void vtable_create(
     struct VTable* vtable,
     const size_t total_args,
+    const size_t n_opt_args,
     const struct ArgumentDefinition* argdefs
 );
 

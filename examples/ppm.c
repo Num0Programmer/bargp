@@ -12,7 +12,8 @@ const struct ArgumentDefinition argdefs[] = {
 };
 
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv)
+{
     size_t total_args = 0;
     size_t n_opt_args = 0;
     int parse_res = BARGP_SUCCESS;
@@ -41,7 +42,7 @@ int main(int argc, char** argv) {
         return BARGP_TOO_MANY_ARGUMENTS;
     }
 
-    vtable_create(&vtable, total_args, argdefs);
+    vtable_create(&vtable, total_args, n_opt_args, argdefs);
     parse_res = parse_args(&vtable, argc, (const char**)(argv));
     if (parse_res != BARGP_SUCCESS)
     {

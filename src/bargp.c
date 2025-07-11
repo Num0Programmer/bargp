@@ -28,7 +28,7 @@ void* get_arg(const struct VTable* vtable, const struct ArgumentDefinition* argd
     const size_t tablei = get_hash(vtable, argdef);
 
 
-    return vtable->table[tablei].value;
+    return vtable->opts[tablei].value;
 }
 
 
@@ -43,7 +43,7 @@ size_t get_hash(const struct VTable* vtable, const struct ArgumentDefinition* ar
         nametol += argdef->name[i];
     }
 
-    return (nametol + argdef->key) % vtable->size;
+    return (nametol + argdef->key) % vtable->n_opts;
 }
 
 
@@ -59,28 +59,43 @@ int parse_args(struct VTable* vtable, const int argc, const char** argv)
 void vtable_create(
         struct VTable* vtable,
         const size_t total_args,
+        const size_t n_opt_args,
         const struct ArgumentDefinition* argdefs
 ) {
     size_t tablei;
 
 
-    vtable->size = BARGP_MAX_NAME_LEN * BARGP_N_CHARS_ALPHA;
-    vtable->table = (struct ArgDefToValue*)malloc(sizeof(struct ArgDefToValue*) * vtable->size);
+    vtable->n_stats = total_args - n_opt_args;
+    vtable->n_opts = BARGP_MAX_NAME_LEN * BARGP_N_CHARS_ALPHA;
+    vtable->opts = (struct ArgDefToValue*)malloc(sizeof(struct ArgDefToValue*) * vtable->n_opts);
+    vtable->stats = (struct ArgDefToValue*)malloc(sizeof(struct ArgDefToValue*) * vtable->n_stats);
     for (size_t i = 0; i < total_args; i += 1)
     {
-        tablei = get_hash(vtable, &argdefs[i]);
-        vtable->table[tablei].argdef = &argdefs[i];
+        if (argdefs[i].is_optional)
+        {
+            tablei = get_hash(vtable, &argdefs[i]);
+            vtable->opts[tablei].argdef = &argdefs[i];
+        }
+        else
+        {
+            vtable->stats[i].argdef = &argdefs[i];
+        }
     }
 }
 
 
 void vtable_destroy(struct VTable* vtable)
 {
-    for (size_t i = 0; i < vtable->size; i += 1)
+    for (size_t i = 0; i < vtable->n_opts; i += 1)
     {
-        free(vtable->table[i].value);
+        free(vtable->opts[i].value);
     }
-    free(vtable->table);
+    for (size_t i = 0; i < vtable->n_stats; i += 1)
+    {
+        free(vtable->stats[i].value);
+    }
+    free(vtable->opts);
+    free(vtable->stats);
 }
 
 
