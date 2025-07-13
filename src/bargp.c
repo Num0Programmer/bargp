@@ -31,6 +31,11 @@ void* __parse_value(const char* value, const struct ArgumentDefinition* argdef)
 }
 
 
+void** __parse_list(const char* value, const struct ArgumentDefinition* argdef)
+{
+}
+
+
 void count_args(size_t* total_args, size_t* n_opt_args, const struct ArgumentDefinition* argdefs)
 {
     size_t i = 0;
