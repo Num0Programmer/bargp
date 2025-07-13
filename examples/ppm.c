@@ -41,8 +41,6 @@ int main(int argc, char** argv)
         );
         return BARGP_TOO_MANY_ARGUMENTS;
     }
-    printf("Total arguments = %lu\n", total_args);
-    printf("Number of optional arguments = %lu\n", n_opt_args);
 
     vtable_create(&vtable, total_args, n_opt_args, argdefs);
     parse_res = parse_args(&vtable, argc, (const char**)(argv));
@@ -51,16 +49,9 @@ int main(int argc, char** argv)
         fprintf(stderr, "Parsing failed: %d\n", parse_res);
         goto exit;
     }
-    char* arg_value = NULL;
-    printf("Argument values:\n");
-    printf("outfile = %s\n", (char*)get_arg_index(&vtable, 0));
-    printf("width = %lu\n", *(unsigned long*)get_arg_index(&vtable, 1));
-    printf("height = %lu\n", *(unsigned long*)get_arg_index(&vtable, 2));
-    printf("bg-color (from name) = %lu\n", *(unsigned long*)get_arg_name(&vtable, "bg-color"));
-    printf("bg-color (from key) = %lu\n", *(unsigned long*)get_arg_key(&vtable, 'b'));
 
 exit:
-    // vtable_destroy(&vtable);
+    vtable_destroy(&vtable);
 
     return parse_res;
 }
