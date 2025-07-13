@@ -45,9 +45,9 @@ struct VTable {
     size_t n_opt_keys;
     size_t n_opt_names;
     size_t n_stats;
-    struct ArgDefToValue* keystoargs;   // optional arguments by key
-    struct ArgDefToValue* namestoargs;  // optional arguments by name
-    struct ArgDefToValue* stats;        // static 'positional' arguments
+    struct ArgDefToValue** keystoargs;   // optional arguments by key
+    struct ArgDefToValue* namestoargs;   // optional arguments by name
+    struct ArgDefToValue* stats;         // static 'positional' arguments
 };
 
 

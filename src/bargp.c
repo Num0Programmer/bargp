@@ -59,7 +59,7 @@ void* get_arg_index(const struct VTable* vtable, const size_t index)
 
 void* get_arg_key(const struct VTable* vtable, const char key)
 {
-    return vtable->keystoargs[get_hash_key(vtable, key)].value;
+    return vtable->keystoargs[get_hash_key(vtable, key)]->value;
 }
 
 
@@ -113,11 +113,10 @@ int parse_args(
         }
         else if (argv[i][0] == '-')
         {
-            printf("Parsing key flags is not implemented!\n");
             tablei = get_hash_key(vtable, argv[i][1]);
-            vtable->keystoargs[tablei].value = __resolve_type(
+            vtable->keystoargs[tablei]->value = __resolve_type(
                 argv[i + 1],
-                vtable->keystoargs[tablei].argdef
+                vtable->keystoargs[tablei]->argdef
             );
             i += 1;
         }
@@ -142,6 +141,7 @@ void vtable_create(
         const size_t n_opt_args,
         const struct ArgumentDefinition* argdefs
 ) {
+    size_t tablei;
     size_t statsi = 0;
 
 
@@ -155,11 +155,13 @@ void vtable_create(
     {
         if (argdefs[i].is_optional)
         {
-            vtable->namestoargs[get_hash_name(vtable, argdefs[i].name)].argdef = &argdefs[i];
+            tablei = get_hash_name(vtable, argdefs[i].name);
+            vtable->namestoargs[tablei].argdef = &argdefs[i];
 
             if (argdefs[i].key)
             {
-                vtable->keystoargs[get_hash_key(vtable, argdefs[i].key)].argdef = &argdefs[i];
+                vtable->keystoargs[get_hash_key(vtable, argdefs[i].key)] =
+                    &vtable->namestoargs[tablei];
             }
         }
         else
@@ -173,10 +175,6 @@ void vtable_create(
 
 void vtable_destroy(struct VTable* vtable)
 {
-    for (size_t i = 0; i < vtable->n_opt_keys; i += 1)
-    {
-        free(vtable->keystoargs[i].value);
-    }
     for (size_t i = 0; i < vtable->n_opt_names; i += 1)
     {
         free(vtable->namestoargs[i].value);

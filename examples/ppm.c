@@ -56,7 +56,7 @@ int main(int argc, char** argv)
     printf("outfile = %s\n", (char*)get_arg_index(&vtable, 0));
     printf("width = %lu\n", *(unsigned long*)get_arg_index(&vtable, 1));
     printf("height = %lu\n", *(unsigned long*)get_arg_index(&vtable, 2));
-    // printf("bg-color (from name) = %lu\n", *(unsigned long*)get_arg_name(&vtable, "bg-color"));
+    printf("bg-color (from name) = %lu\n", *(unsigned long*)get_arg_name(&vtable, "bg-color"));
     printf("bg-color (from key) = %lu\n", *(unsigned long*)get_arg_key(&vtable, 'b'));
 
 exit:
