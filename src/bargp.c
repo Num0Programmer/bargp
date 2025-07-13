@@ -65,7 +65,6 @@ void* get_arg_name(const struct VTable* vtable, const char* name)
 
 size_t get_hash_name(const struct VTable* vtable, const char* name)
 {
-    printf("get_hash_name() called here with name='%s'\n", name);
     const size_t name_len = strlen(name);
     size_t nametol = 0;
 
