@@ -57,9 +57,21 @@ void* get_arg_index(const struct VTable* vtable, const size_t index)
 }
 
 
+void* get_arg_key(const struct VTable* vtable, const char key)
+{
+    return vtable->keystoargs[get_hash_key(vtable, key)].value;
+}
+
+
 void* get_arg_name(const struct VTable* vtable, const char* name)
 {
     return vtable->namestoargs[get_hash_name(vtable, name)].value;
+}
+
+
+size_t get_hash_key(const struct VTable* vtable, const char key)
+{
+    return key % vtable->n_opt_keys;
 }
 
 
@@ -102,13 +114,11 @@ int parse_args(
         else if (argv[i][0] == '-')
         {
             printf("Parsing key flags is not implemented!\n");
-            // for (size_t j = 0; j < total_args; j += 1)
-            // {
-            //     if (argdefs[j].key == argv[i][1])
-            //     {
-            //     }
-            // }
-
+            tablei = get_hash_key(vtable, argv[i][1]);
+            vtable->keystoargs[tablei].value = __resolve_type(
+                argv[i + 1],
+                vtable->keystoargs[tablei].argdef
+            );
             i += 1;
         }
         // try static argument
@@ -133,7 +143,6 @@ void vtable_create(
         const struct ArgumentDefinition* argdefs
 ) {
     size_t statsi = 0;
-    size_t tablei;
 
 
     vtable->n_opt_keys = BARGP_N_CHARS_ALPHA - 1;  // removes '-'
@@ -146,8 +155,12 @@ void vtable_create(
     {
         if (argdefs[i].is_optional)
         {
-            tablei = get_hash_name(vtable, argdefs[i].name);
-            vtable->namestoargs[tablei].argdef = &argdefs[i];
+            vtable->namestoargs[get_hash_name(vtable, argdefs[i].name)].argdef = &argdefs[i];
+
+            if (argdefs[i].key)
+            {
+                vtable->keystoargs[get_hash_key(vtable, argdefs[i].key)].argdef = &argdefs[i];
+            }
         }
         else
         {

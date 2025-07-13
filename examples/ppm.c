@@ -4,7 +4,7 @@
 
 
 const struct ArgumentDefinition argdefs[] = {
-    { .name = "bg-color", .type =   LONG, .is_optional = true },
+    { .name = "bg-color", .key = 'b', .type =   LONG, .is_optional = true },
     { .name =      "out", .type = STRING },
     { .name =    "width", .type =   LONG },
     { .name =   "height", .type =   LONG },
@@ -56,7 +56,8 @@ int main(int argc, char** argv)
     printf("outfile = %s\n", (char*)get_arg_index(&vtable, 0));
     printf("width = %lu\n", *(unsigned long*)get_arg_index(&vtable, 1));
     printf("height = %lu\n", *(unsigned long*)get_arg_index(&vtable, 2));
-    printf("bg-color = %lu\n", *(unsigned long*)get_arg_name(&vtable, "bg-color"));
+    // printf("bg-color (from name) = %lu\n", *(unsigned long*)get_arg_name(&vtable, "bg-color"));
+    printf("bg-color (from key) = %lu\n", *(unsigned long*)get_arg_key(&vtable, 'b'));
 
 exit:
     // vtable_destroy(&vtable);
