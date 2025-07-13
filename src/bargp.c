@@ -4,30 +4,30 @@
 #include "../include/bargp.h"
 
 
-void** __resolve_type(const char* value, const struct ArgumentDefinition* argdef)
+void* __resolve_type(const char* value, const struct ArgumentDefinition* argdef)
 {
-    void** alloc = malloc(sizeof(void*));
+    void* mem = NULL;
 
 
     switch(argdef->type)
     {
         case LONG:
-            *alloc = malloc(sizeof(double));
-            **(long**)(alloc) = strtol(value, NULL, 10);
+            mem = malloc(sizeof(long));
+            *(long*)(mem) = strtol(value, NULL, 10);
             break;
-        // case DOUBLE:
-        //     alloc = (void*)malloc(sizeof(double));
-        //     *(double*)alloc = strtod(value, NULL);
-        //     break;
+        case DOUBLE:
+            mem = malloc(sizeof(double));
+            *(double*)(mem) = strtod(value, NULL);
+            break;
         case STRING:
-            *alloc = malloc(sizeof(char) * strlen(value));
-            strcpy(*alloc, value);
+            mem = malloc(sizeof(char) * strlen(value));
+            strcpy(mem, value);
             break;
         default:
             break;
     }
 
-    return alloc;
+    return mem;
 }
 
 
@@ -85,11 +85,8 @@ size_t get_hash(const struct VTable* vtable, const struct ArgumentDefinition* ar
 int parse_args(
         struct VTable* vtable,
         const int argc,
-        const char** argv,
-        const size_t total_args,
-        const struct ArgumentDefinition* argdefs
+        const char** argv
 ) {
-    size_t size;
     size_t tablei;
     size_t statsi = 0;
 
@@ -126,9 +123,10 @@ int parse_args(
         // try static argument
         else
         {
-            size = strlen(argv[i]);
-            vtable->stats[statsi].value = calloc(size, sizeof(char));
-            strcpy((char*)(vtable->stats[statsi].value), argv[i]);
+            vtable->stats[statsi].value = __resolve_type(
+                argv[i],
+                vtable->stats[statsi].argdef
+            );
             statsi += 1;
         }
     }
