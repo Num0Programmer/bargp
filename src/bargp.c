@@ -40,45 +40,42 @@ void count_args(size_t* total_args, size_t* n_opt_args, const struct ArgumentDef
 
     while(argdefs[i].type != 0)
     {
-        *total_args += 1;
         if (argdefs[i].is_optional)
         {
             *n_opt_args += 1;
+            *total_args += 1;
         }
+        *total_args += 1;
         i += 1;
     }
 }
 
 
-void* get_arg(const struct VTable* vtable, const struct ArgumentDefinition* argdef)
+void* get_arg_index(const struct VTable* vtable, const size_t index)
 {
-    if (argdef->is_optional)
-    {
-        return vtable->opts[get_hash(vtable, argdef)].value;
-    }
-
-    for (size_t i = 0; i < vtable->n_stats; i += 1)
-    {
-        if (argdef == vtable->stats[i].argdef)
-        {
-            return vtable->stats[i].value;
-        }
-    }
+    return vtable->stats[index].value;
 }
 
 
-size_t get_hash(const struct VTable* vtable, const struct ArgumentDefinition* argdef)
+void* get_arg_name(const struct VTable* vtable, const char* name)
 {
-    const size_t name_len = strlen(argdef->name);
+    return vtable->namestoargs[get_hash_name(vtable, name)].value;
+}
+
+
+size_t get_hash_name(const struct VTable* vtable, const char* name)
+{
+    printf("get_hash_name() called here with name='%s'\n", name);
+    const size_t name_len = strlen(name);
     size_t nametol = 0;
 
 
     for (size_t i = 0; i < name_len; i += 1)
     {
-        nametol += argdef->name[i];
+        nametol += name[i];
     }
 
-    return (nametol + argdef->key) % vtable->n_opts;
+    return nametol % vtable->n_opt_names;
 }
 
 
@@ -96,17 +93,12 @@ int parse_args(
         // try optional argument
         if (argv[i][0] == '-' && argv[i][1] == '-')
         {
-            // for (size_t j = 0; j < total_args; j += 1)
-            // {
-            //     if (argdefs[j].key == argv[i][1])
-            //     {
-            //         tablei = get_hash(vtable, &argdefs[j]);
-            //         vtable->opts[tablei].argdef = &argdefs[j];
-            //         vtable->opts[tablei].value = __resolve_type(argv[i + 1], &argdefs[j]);
-            //     }
-            // }
-
-            // i += 1;
+            tablei = get_hash_name(vtable, &argv[i][2]);
+            vtable->namestoargs[tablei].value = __resolve_type(
+                argv[i + 1],
+                vtable->namestoargs[tablei].argdef
+            );
+            i += 1;
         }
         else if (argv[i][0] == '-')
         {
@@ -145,16 +137,18 @@ void vtable_create(
     size_t tablei;
 
 
+    vtable->n_opt_keys = BARGP_N_CHARS_ALPHA - 1;  // removes '-'
+    vtable->n_opt_names = BARGP_MAX_NAME_LEN * BARGP_N_CHARS_ALPHA;
     vtable->n_stats = total_args - n_opt_args;
-    vtable->n_opts = BARGP_MAX_NAME_LEN * BARGP_N_CHARS_ALPHA;
-    vtable->opts = (struct ArgDefToValue*)malloc(sizeof(struct ArgDefToValue) * vtable->n_opts);
-    vtable->stats = (struct ArgDefToValue*)malloc(sizeof(struct ArgDefToValue) * vtable->n_stats);
+    vtable->keystoargs = malloc(sizeof(struct ArgDefToValue) * vtable->n_opt_keys);
+    vtable->namestoargs = malloc(sizeof(struct ArgDefToValue) * vtable->n_opt_names);
+    vtable->stats = malloc(sizeof(struct ArgDefToValue) * vtable->n_stats);
     for (size_t i = 0; i < total_args; i += 1)
     {
         if (argdefs[i].is_optional)
         {
-            tablei = get_hash(vtable, &argdefs[i]);
-            vtable->opts[tablei].argdef = &argdefs[i];
+            tablei = get_hash_name(vtable, argdefs[i].name);
+            vtable->namestoargs[tablei].argdef = &argdefs[i];
         }
         else
         {
@@ -167,15 +161,20 @@ void vtable_create(
 
 void vtable_destroy(struct VTable* vtable)
 {
-    for (size_t i = 0; i < vtable->n_opts; i += 1)
+    for (size_t i = 0; i < vtable->n_opt_keys; i += 1)
     {
-        free(vtable->opts[i].value);
+        free(vtable->keystoargs[i].value);
+    }
+    for (size_t i = 0; i < vtable->n_opt_names; i += 1)
+    {
+        free(vtable->namestoargs[i].value);
     }
     for (size_t i = 0; i < vtable->n_stats; i += 1)
     {
         free(vtable->stats[i].value);
     }
-    free(vtable->opts);
+    free(vtable->keystoargs);
+    free(vtable->namestoargs);
     free(vtable->stats);
 }
 

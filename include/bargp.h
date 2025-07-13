@@ -42,20 +42,25 @@ struct ArgDefToValue
 
 
 struct VTable {
-    size_t n_opts;
+    size_t n_opt_keys;
+    size_t n_opt_names;
     size_t n_stats;
-    struct ArgDefToValue* opts;   // optional arguments
-    struct ArgDefToValue* stats;  // static 'positional' arguments
+    struct ArgDefToValue* keystoargs;   // optional arguments by key
+    struct ArgDefToValue* namestoargs;  // optional arguments by name
+    struct ArgDefToValue* stats;        // static 'positional' arguments
 };
 
 
 void count_args(size_t* total_args, size_t* n_opt_args, const struct ArgumentDefinition* argdefs);
 
 
-void* get_arg(const struct VTable* vtable, const struct ArgumentDefinition* argdef);
+void* get_arg_index(const struct VTable* vtable, const size_t index);
 
 
-size_t get_hash(const struct VTable* vtable, const struct ArgumentDefinition* argdef);
+void* get_arg_name(const struct VTable* vtable, const char* name);
+
+
+size_t get_hash_name(const struct VTable* vtable, const char* argdef);
 
 
 int parse_args(struct VTable* vtable, const int argc, const char** argv);
