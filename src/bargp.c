@@ -4,7 +4,7 @@
 #include "../include/bargp.h"
 
 
-void* __resolve_type(const char* value, const struct ArgumentDefinition* argdef)
+void* __parse_value(const char* value, const struct ArgumentDefinition* argdef)
 {
     void* mem = NULL;
 
@@ -105,7 +105,7 @@ int parse_args(
         if (argv[i][0] == '-' && argv[i][1] == '-')
         {
             tablei = get_hash_name(vtable, &argv[i][2]);
-            vtable->namestoargs[tablei].value = __resolve_type(
+            vtable->namestoargs[tablei].value = __parse_value(
                 argv[i + 1],
                 vtable->namestoargs[tablei].argdef
             );
@@ -114,7 +114,7 @@ int parse_args(
         else if (argv[i][0] == '-')
         {
             tablei = get_hash_key(vtable, argv[i][1]);
-            vtable->keystoargs[tablei]->value = __resolve_type(
+            vtable->keystoargs[tablei]->value = __parse_value(
                 argv[i + 1],
                 vtable->keystoargs[tablei]->argdef
             );
@@ -123,7 +123,7 @@ int parse_args(
         // try static argument
         else
         {
-            vtable->stats[statsi].value = __resolve_type(
+            vtable->stats[statsi].value = __parse_value(
                 argv[i],
                 vtable->stats[statsi].argdef
             );
