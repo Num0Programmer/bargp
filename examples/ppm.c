@@ -9,6 +9,7 @@
 
 const struct ArgumentDefinition argdefs[] = {
     { .name = "bg-color", .key = 'b', .type =   LONG, .is_optional = true },
+    { .name =   "square", .key = 's', .type = STRING, .is_optional = true, .is_list = true },
     { .name =      "out", .type = STRING },
     { .name =    "width", .type =   LONG },
     { .name =   "height", .type =   LONG },
