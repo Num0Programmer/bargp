@@ -41,6 +41,8 @@ int main(int argc, char** argv)
         );
         return BARGP_TOO_MANY_ARGUMENTS;
     }
+    printf("Total arguments = %lu\n", total_args);
+    printf("Number of optional arguments = %lu\n", n_opt_args);
 
     vtable_create(&vtable, total_args, n_opt_args, argdefs);
     parse_res = parse_args(&vtable, argc, (const char**)(argv), total_args, argdefs);
@@ -49,13 +51,24 @@ int main(int argc, char** argv)
         fprintf(stderr, "Parsing failed: %d\n", parse_res);
         goto exit;
     }
-    printf("outfile = %s\n", (char*)get_arg(&vtable, &argdefs[0]));
-    printf("width = %lu\n", *(unsigned long*)get_arg(&vtable, &argdefs[1]));
-    printf("height = %lu\n", *(unsigned long*)get_arg(&vtable, &argdefs[2]));
+    char* arg_value = NULL;
+    printf("Argument values:\n");
+    for (size_t i = 0; i < vtable.n_stats; i += 1)
+    {
+        printf(
+            "'%s' (size=%lu)\n",
+            (char*)(vtable.stats[i].value),
+            strlen((char*)(vtable.stats[i].value))
+        );
+        // if (arg_value[size] == '\0') printf("Above has a null terminator!\n");
+    }
+    // printf("outfile = %s\n", (char*)get_arg(&vtable, &argdefs[0]));
+    // printf("width = %lu\n", *(unsigned long*)get_arg(&vtable, &argdefs[1]));
+    // printf("height = %lu\n", *(unsigned long*)get_arg(&vtable, &argdefs[2]));
     // printf("bg-color = %lu\n", *(unsigned long*)get_arg(&vtable, &argdefs[3]));
 
 exit:
-    vtable_destroy(&vtable);
+    // vtable_destroy(&vtable);
 
     return parse_res;
 }

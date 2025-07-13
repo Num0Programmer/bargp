@@ -4,24 +4,26 @@
 #include "../include/bargp.h"
 
 
-void* __resolve_type(const char* value, const struct ArgumentDefinition* argdef)
+void** __resolve_type(const char* value, const struct ArgumentDefinition* argdef)
 {
-    void* alloc = NULL;
+    void** alloc = malloc(sizeof(void*));
 
 
     switch(argdef->type)
     {
         case LONG:
-            alloc = (void*)malloc(sizeof(double));
-            *(long*)alloc = strtol(value, NULL, 10);
+            *alloc = malloc(sizeof(double));
+            **(long**)(alloc) = strtol(value, NULL, 10);
             break;
-        case DOUBLE:
-            alloc = (void*)malloc(sizeof(double));
-            *(double*)alloc = strtod(value, NULL);
-            break;
+        // case DOUBLE:
+        //     alloc = (void*)malloc(sizeof(double));
+        //     *(double*)alloc = strtod(value, NULL);
+        //     break;
         case STRING:
-            alloc = (void*)malloc(sizeof(char*) * strlen(value));
-            strcpy(alloc, value);
+            *alloc = malloc(sizeof(char) * strlen(value));
+            strcpy(*alloc, value);
+            break;
+        default:
             break;
     }
 
@@ -50,10 +52,18 @@ void count_args(size_t* total_args, size_t* n_opt_args, const struct ArgumentDef
 
 void* get_arg(const struct VTable* vtable, const struct ArgumentDefinition* argdef)
 {
-    const size_t tablei = get_hash(vtable, argdef);
+    if (argdef->is_optional)
+    {
+        return vtable->opts[get_hash(vtable, argdef)].value;
+    }
 
-
-    return vtable->opts[tablei].value;
+    for (size_t i = 0; i < vtable->n_stats; i += 1)
+    {
+        if (argdef == vtable->stats[i].argdef)
+        {
+            return vtable->stats[i].value;
+        }
+    }
 }
 
 
@@ -79,27 +89,27 @@ int parse_args(
         const size_t total_args,
         const struct ArgumentDefinition* argdefs
 ) {
+    size_t size;
     size_t tablei;
-    size_t i = 1;
     size_t statsi = 0;
 
 
-    while (i < argc)
+    for (size_t i = 1; i < argc; i += 1)
     {
         // try optional argument
         if (argv[i][0] == '-' && argv[i][1] == '-')
         {
-            for (size_t j = 0; j < total_args; j += 1)
-            {
-                if (argdefs[j].key == argv[i][1])
-                {
-                    tablei = get_hash(vtable, &argdefs[j]);
-                    vtable->opts[tablei].argdef = &argdefs[j];
-                    vtable->opts[tablei].value = __resolve_type(argv[i + 1], &argdefs[j]);
-                }
-            }
+            // for (size_t j = 0; j < total_args; j += 1)
+            // {
+            //     if (argdefs[j].key == argv[i][1])
+            //     {
+            //         tablei = get_hash(vtable, &argdefs[j]);
+            //         vtable->opts[tablei].argdef = &argdefs[j];
+            //         vtable->opts[tablei].value = __resolve_type(argv[i + 1], &argdefs[j]);
+            //     }
+            // }
 
-            i += 1;
+            // i += 1;
         }
         else if (argv[i][0] == '-')
         {
@@ -116,15 +126,11 @@ int parse_args(
         // try static argument
         else
         {
-            printf("Inserting value '%s' for '%s' argument...\n", argv[i], vtable->stats[statsi].argdef->name);
-            vtable->stats[statsi].value = __resolve_type(
-                argv[i],
-                vtable->stats[statsi].argdef
-            );
+            size = strlen(argv[i]);
+            vtable->stats[statsi].value = calloc(size, sizeof(char));
+            strcpy((char*)(vtable->stats[statsi].value), argv[i]);
             statsi += 1;
         }
-
-        i += 1;
     }
 
     return BARGP_SUCCESS;
@@ -137,13 +143,14 @@ void vtable_create(
         const size_t n_opt_args,
         const struct ArgumentDefinition* argdefs
 ) {
+    size_t statsi = 0;
     size_t tablei;
 
 
     vtable->n_stats = total_args - n_opt_args;
     vtable->n_opts = BARGP_MAX_NAME_LEN * BARGP_N_CHARS_ALPHA;
-    vtable->opts = (struct ArgDefToValue*)malloc(sizeof(struct ArgDefToValue*) * vtable->n_opts);
-    vtable->stats = (struct ArgDefToValue*)malloc(sizeof(struct ArgDefToValue*) * vtable->n_stats);
+    vtable->opts = (struct ArgDefToValue*)malloc(sizeof(struct ArgDefToValue) * vtable->n_opts);
+    vtable->stats = (struct ArgDefToValue*)malloc(sizeof(struct ArgDefToValue) * vtable->n_stats);
     for (size_t i = 0; i < total_args; i += 1)
     {
         if (argdefs[i].is_optional)
@@ -153,7 +160,8 @@ void vtable_create(
         }
         else
         {
-            vtable->stats[i].argdef = &argdefs[i];
+            vtable->stats[statsi].argdef = &argdefs[i];
+            statsi += 1;
         }
     }
 }
