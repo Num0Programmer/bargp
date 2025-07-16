@@ -8,8 +8,8 @@
 
 
 const struct ArgumentDefinition argdefs[] = {
-    { .name = "bg-color", .key = 'b', .type =   LONG, .is_optional = true },
-    { .name =   "rect", .key = 'r', .type = DOUBLE, .is_optional = true, .is_list = true },
+    { .name = "bg-color", .key = 'b', .type = LONG, .is_optional = true },
+    { .name =     "rect", .key = 'r', .type = LONG, .is_optional = true, .is_list = true },
     { .name =      "out", .type = STRING },
     { .name =    "width", .type =   LONG },
     { .name =   "height", .type =   LONG },
@@ -18,9 +18,9 @@ const struct ArgumentDefinition argdefs[] = {
 
 
 struct Rect {
-    double pos[2];  // upper left corner of shape
-    double width;
-    double height;
+    unsigned long pos[2];  // upper left corner of shape
+    unsigned long width;
+    unsigned long height;
 };
 
 
@@ -86,12 +86,12 @@ int main(int argc, char** argv)
     if ((value = get_arg_key(&vtable, 'r')) != NULL)
     {
         rect = malloc(sizeof(struct Rect));
-        rect->pos[0] = ((double*)(value))[0];
-        rect->pos[1] = ((double*)(value))[1];
-        rect->width = ((double*)(value))[2];
-        rect->height = ((double*)(value))[3];
+        rect->pos[0] = ((unsigned long*)(value))[0];
+        rect->pos[1] = ((unsigned long*)(value))[1];
+        rect->width = ((unsigned long*)(value))[2];
+        rect->height = ((unsigned long*)(value))[3];
         printf(
-            "Rect: { x = %lf, y = %lf, width = %lf, height = %lf }\n",
+            "Rect: { x = %lu, y = %lu, width = %lu, height = %lu }\n",
             rect->pos[0],
             rect->pos[1],
             rect->width,
