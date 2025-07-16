@@ -188,10 +188,16 @@ int parse_args(
         // try static argument
         else
         {
-            vtable->stats[statsi].value = __parse_value(
-                argv[i],
-                vtable->stats[statsi].argdef
-            );
+            argdef = vtable->stats[statsi].argdef;
+
+            if (argdef->is_list)
+            {
+                vtable->stats[statsi].value = __parse_list(argv[i], argdef);
+            }
+            else
+            {
+                vtable->stats[statsi].value = __parse_value(argv[i], argdef);
+            }
             statsi += 1;
         }
     }
