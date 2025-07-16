@@ -9,7 +9,7 @@
 
 const struct ArgumentDefinition argdefs[] = {
     { .name = "bg-color", .key = 'b', .type =   LONG, .is_optional = true },
-    { .name =   "square", .key = 's', .type = DOUBLE, .is_optional = true, .is_list = true },
+    { .name =   "rect", .key = 'r', .type = DOUBLE, .is_optional = true, .is_list = true },
     { .name =      "out", .type = STRING },
     { .name =    "width", .type =   LONG },
     { .name =   "height", .type =   LONG },
@@ -17,8 +17,8 @@ const struct ArgumentDefinition argdefs[] = {
 };
 
 
-struct Square {
-    double pos[2];
+struct Rect {
+    double pos[2];  // upper left corner of shape
     double width;
     double height;
 };
@@ -43,7 +43,7 @@ int main(int argc, char** argv)
     int parse_res = BARGP_SUCCESS;
     struct Arguments args = { 0 };
     struct VTable vtable = { 0 };
-    struct Square* square = NULL;
+    struct Rect* rect = NULL;
 
 
     args.bg_color = 0;
@@ -83,19 +83,19 @@ int main(int argc, char** argv)
     args.width = *(size_t*)get_arg_index(&vtable, 1);
     args.height = *(size_t*)get_arg_index(&vtable, 2);
     if ((value = get_arg_key(&vtable, 'b')) != NULL) args.bg_color = *(char*)(value);
-    if ((value = get_arg_name(&vtable, "square")) != NULL)
+    if ((value = get_arg_key(&vtable, 'r')) != NULL)
     {
-        square = malloc(sizeof(struct Square));
-        square->pos[0] = ((double*)(value))[0];
-        square->pos[1] = ((double*)(value))[1];
-        square->width = ((double*)(value))[2];
-        square->height = ((double*)(value))[3];
+        rect = malloc(sizeof(struct Rect));
+        rect->pos[0] = ((double*)(value))[0];
+        rect->pos[1] = ((double*)(value))[1];
+        rect->width = ((double*)(value))[2];
+        rect->height = ((double*)(value))[3];
         printf(
-            "Square: { x = %lf, y = %lf, width = %lf, height = %lf }\n",
-            square->pos[0],
-            square->pos[1],
-            square->width,
-            square->height
+            "Rect: { x = %lf, y = %lf, width = %lf, height = %lf }\n",
+            rect->pos[0],
+            rect->pos[1],
+            rect->width,
+            rect->height
         );
     }
 
