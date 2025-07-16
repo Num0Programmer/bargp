@@ -65,7 +65,7 @@ void* __parse_list(const char* value, const struct ArgumentDefinition* argdef)
         switch (argdef->type)
         {
             case LONG:
-                // *(long)(mem + i * 8) = strtol(tok, NULL, 10);
+                *(long*)(mem + i * 8) = strtol(tok, NULL, 10);
                 break;
             case DOUBLE:
                 *(double*)(mem + i * 8) = strtod(tok, NULL);
@@ -173,10 +173,16 @@ int parse_args(
         else if (argv[i][0] == '-')
         {
             tablei = get_hash_key(vtable, argv[i][1]);
-            vtable->keystoargs[tablei]->value = __parse_value(
-                argv[i + 1],
-                vtable->keystoargs[tablei]->argdef
-            );
+            argdef = vtable->keystoargs[tablei]->argdef;
+
+            if (argdef->is_list)
+            {
+                vtable->keystoargs[tablei]->value = __parse_list(argv[i + 1], argdef);
+            }
+            else
+            {
+                vtable->keystoargs[tablei]->value = __parse_value(argv[i + 1], argdef);
+            }
             i += 1;
         }
         // try static argument
