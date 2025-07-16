@@ -18,9 +18,9 @@ const struct ArgumentDefinition argdefs[] = {
 
 
 struct Rect {
-    unsigned long pos[2];  // upper left corner of shape
-    unsigned long width;
-    unsigned long height;
+    size_t pos[2];  // upper left corner of shape
+    size_t width;
+    size_t height;
 };
 
 
@@ -86,10 +86,10 @@ int main(int argc, char** argv)
     if ((value = get_arg_key(&vtable, 'r')) != NULL)
     {
         rect = malloc(sizeof(struct Rect));
-        rect->pos[0] = ((unsigned long*)(value))[0];
-        rect->pos[1] = ((unsigned long*)(value))[1];
-        rect->width = ((unsigned long*)(value))[2];
-        rect->height = ((unsigned long*)(value))[3];
+        rect->pos[0] = ((size_t*)(value))[0];
+        rect->pos[1] = ((size_t*)(value))[1];
+        rect->width = ((size_t*)(value))[2];
+        rect->height = ((size_t*)(value))[3];
         printf(
             "Rect: { x = %lu, y = %lu, width = %lu, height = %lu }\n",
             rect->pos[0],
