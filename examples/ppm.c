@@ -9,7 +9,7 @@
 
 const struct ArgumentDefinition argdefs[] = {
     { .name = "bg-color", .key = 'b', .type =   LONG, .is_optional = true },
-    { .name =   "square", .key = 's', .type = STRING, .is_optional = true, .is_list = true },
+    { .name =   "square", .key = 's', .type = DOUBLE, .is_optional = true, .is_list = true },
     { .name =      "out", .type = STRING },
     { .name =    "width", .type =   LONG },
     { .name =   "height", .type =   LONG },
@@ -17,7 +17,14 @@ const struct ArgumentDefinition argdefs[] = {
 };
 
 
-struct arguments {
+struct Square {
+    double pos[2];
+    double width;
+    double height;
+};
+
+
+struct Arguments {
     char* out;
     size_t width;
     size_t height;
@@ -34,8 +41,9 @@ int main(int argc, char** argv)
     size_t total_args = 0;
     size_t n_opt_args = 0;
     int parse_res = BARGP_SUCCESS;
-    struct arguments args = { 0 };
-    struct VTable vtable;
+    struct Arguments args = { 0 };
+    struct VTable vtable = { 0 };
+    struct Square* square = NULL;
 
 
     args.bg_color = 0;
@@ -75,6 +83,21 @@ int main(int argc, char** argv)
     args.width = *(size_t*)get_arg_index(&vtable, 1);
     args.height = *(size_t*)get_arg_index(&vtable, 2);
     if ((value = get_arg_key(&vtable, 'b')) != NULL) args.bg_color = *(char*)(value);
+    if ((value = get_arg_name(&vtable, "square")) != NULL)
+    {
+        square = malloc(sizeof(struct Square));
+        square->pos[0] = ((double*)(value))[0];
+        square->pos[1] = ((double*)(value))[1];
+        square->width = ((double*)(value))[2];
+        square->height = ((double*)(value))[3];
+        printf(
+            "Square: { x = %lf, y = %lf, width = %lf, height = %lf }\n",
+            square->pos[0],
+            square->pos[1],
+            square->width,
+            square->height
+        );
+    }
 
     if ((fh = fopen(args.out, "w")) != NULL)
     {

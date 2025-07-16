@@ -9,7 +9,7 @@ void* __parse_value(const char* value, const struct ArgumentDefinition* argdef)
     void* mem = NULL;
 
 
-    switch(argdef->type)
+    switch (argdef->type)
     {
         case LONG:
             mem = malloc(sizeof(long));
@@ -41,10 +41,43 @@ void* __parse_list(const char* value, const struct ArgumentDefinition* argdef)
 
     while (value[i] != '\0')
     {
-        if (value[i] == BARGP_LIST_DELIM) count += 1;
+        if (value[i] == *BARGP_LIST_DELIM) count += 1;
         i += 1;
     }
-    printf("Number of items in '%s' = %lu\n", value, count);
+    // printf("Number of items in '%s' = %lu\n", value, count);
+    switch (argdef->type)
+    {
+        case LONG:
+            mem = malloc(sizeof(long) * count);
+            break;
+        case DOUBLE:
+            mem = malloc(sizeof(double) * count);
+            break;
+        case STRING:
+            fprintf(stderr, "Parsing lists of strings is not yet supported!\n");
+            exit(83);
+            break;
+    }
+
+    tok = strtok((char*)(value), BARGP_LIST_DELIM);
+    for (i = 0; i < count && tok != NULL; i += 1)
+    {
+        switch (argdef->type)
+        {
+            case LONG:
+                // *(long)(mem + i * 8) = strtol(tok, NULL, 10);
+                break;
+            case DOUBLE:
+                *(double*)(mem + i * 8) = strtod(tok, NULL);
+                break;
+            case STRING:
+                // TODO: calculate sum of length of strings and allocate that many characters -
+                // leave in null characters or something
+                // OTHERWISE: figure out how different 'void*' is from 'void**'
+                break;
+        }
+        tok = strtok(NULL, BARGP_LIST_DELIM);
+    }
 
     return mem;
 }
@@ -129,7 +162,7 @@ int parse_args(
 
             if (argdef->is_list)
             {
-                __parse_list(argv[i + 1], argdef);
+                vtable->namestoargs[tablei].value = __parse_list(argv[i + 1], argdef);
             }
             else
             {

@@ -19,7 +19,7 @@
 #define BARGP_N_CHARS_ALPHA 27  // every letter [a-z][A-Z] and '-'
 
 /* parsing list of values */
-#define BARGP_LIST_DELIM ','
+#define BARGP_LIST_DELIM ","
 
 
 enum ArgType {
