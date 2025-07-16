@@ -14,9 +14,12 @@
 #define BARGP_TOO_FEW_ARGUMENTS 60;
 #define BARGP_TOO_MANY_ARGUMENTS 70;
 
-/* Hash table construction */
+/* hash table construction */
 #define BARGP_MAX_NAME_LEN 64
 #define BARGP_N_CHARS_ALPHA 27  // every letter [a-z][A-Z] and '-'
+
+/* parsing list of values */
+#define BARGP_LIST_DELIM ','
 
 
 enum ArgType {

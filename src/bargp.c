@@ -31,8 +31,22 @@ void* __parse_value(const char* value, const struct ArgumentDefinition* argdef)
 }
 
 
-void** __parse_list(const char* value, const struct ArgumentDefinition* argdef)
+void* __parse_list(const char* value, const struct ArgumentDefinition* argdef)
 {
+    size_t count = 1;
+    char* tok = NULL;
+    void* mem = NULL;
+    size_t i = 0;
+
+
+    while (value[i] != '\0')
+    {
+        if (value[i] == BARGP_LIST_DELIM) count += 1;
+        i += 1;
+    }
+    printf("Number of items in '%s' = %lu\n", value, count);
+
+    return mem;
 }
 
 
@@ -102,6 +116,7 @@ int parse_args(
 ) {
     size_t tablei;
     size_t statsi = 0;
+    const struct ArgumentDefinition* argdef = NULL;
 
 
     for (size_t i = 1; i < argc; i += 1)
@@ -110,10 +125,16 @@ int parse_args(
         if (argv[i][0] == '-' && argv[i][1] == '-')
         {
             tablei = get_hash_name(vtable, &argv[i][2]);
-            vtable->namestoargs[tablei].value = __parse_value(
-                argv[i + 1],
-                vtable->namestoargs[tablei].argdef
-            );
+            argdef = vtable->namestoargs[tablei].argdef;
+
+            if (argdef->is_list)
+            {
+                __parse_list(argv[i + 1], argdef);
+            }
+            else
+            {
+                vtable->namestoargs[tablei].value = __parse_value(argv[i + 1], argdef);
+            }
             i += 1;
         }
         else if (argv[i][0] == '-')
