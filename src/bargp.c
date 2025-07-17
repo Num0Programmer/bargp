@@ -185,14 +185,20 @@ void help_fmt()
 int parse_args(
         struct VTable* vtable,
         const int argc,
-        const char** argv
+        const char** argv,
+        const struct ArgumentDefinition* argdefs
 ) {
     size_t tablei;
     size_t statsi = 0;
+    size_t total_args = 0;
+    size_t n_opt_args = 0;
     const struct ArgumentDefinition* argdef = NULL;
 
 
-    if (need_help) help_fmt();
+    if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0) help_fmt();
+    count_args(&total_args, &n_opt_args, argdefs, argv, argc);
+    vtable_create(vtable, total_args, n_opt_args, argdefs);
+
     for (size_t i = 1; i < argc; i += 1)
     {
         // try optional argument

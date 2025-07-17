@@ -57,8 +57,6 @@ int main(int argc, char** argv)
     uint8_t* ppm_buf = NULL;
     void* value = NULL;
     size_t buf_size = 0;
-    size_t total_args = 0;
-    size_t n_opt_args = 0;
     int parse_res = BARGP_SUCCESS;
     struct Arguments args = { 0 };
     struct VTable vtable = { 0 };
@@ -67,9 +65,7 @@ int main(int argc, char** argv)
 
     args.bg_color = 0;
 
-    count_args(&total_args, &n_opt_args, argdefs, (const char**)(argv), argc);
-    vtable_create(&vtable, total_args, n_opt_args, argdefs);
-    parse_res = parse_args(&vtable, argc, (const char**)(argv));
+    parse_res = parse_args(&vtable, argc, (const char**)(argv), argdefs);
     if (parse_res != BARGP_SUCCESS)
     {
         fprintf(stderr, "Parsing failed: %d\n", parse_res);
