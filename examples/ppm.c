@@ -7,6 +7,7 @@
 #define N_CHANNELS 3
 
 
+const char* usage = "./ppm [OPTIONS]... OUTFILE WIDTH HEIGHT";
 const struct ArgumentDefinition argdefs[] = {
     { .name = "bg-color", .key = 'b', .type = LONG, .is_optional = true },
     { .name =     "rect", .key = 'r', .type = LONG, .is_optional = true, .is_list = true },

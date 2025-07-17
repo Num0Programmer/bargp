@@ -109,6 +109,11 @@ void count_args(
         i += 1;
     }
 
+    if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0)
+    {
+        need_help = true;
+        return;
+    }
     if ((size_t)(argc) - 1 + *n_opt_args < *total_args - *n_opt_args)
     {
         fprintf(
@@ -176,7 +181,7 @@ void help_fmt(
         const struct ArgumentDefinition* argdefs,
         const size_t total_args
 ) {
-    printf("Usage: [BIN]");
+    printf("Usage: %s", usage);
     exit(0);
 }
 
@@ -194,7 +199,6 @@ int parse_args(
     const struct ArgumentDefinition* argdef = NULL;
 
 
-    if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0) need_help = true;
     count_args(&total_args, &n_opt_args, argdefs, argv, argc);
     vtable_create(vtable, total_args, n_opt_args, argdefs);
     if (need_help) help_fmt(vtable, argdefs, total_args);

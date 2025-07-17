@@ -22,6 +22,10 @@
 #define BARGP_LIST_DELIM ","
 
 
+/* help formatting */
+extern const char* usage;
+
+
 enum ArgType {
     LONG = 1,
     DOUBLE,
