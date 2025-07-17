@@ -4,9 +4,6 @@
 #include "../include/bargp.h"
 
 
-static bool need_help = false;
-
-
 void* __parse_value(const char* value, const struct ArgumentDefinition* argdef)
 {
     void* mem = NULL;
@@ -109,11 +106,6 @@ void count_args(
         i += 1;
     }
 
-    if (strcmp(argv[1], "-h") || strcmp(argv[1], "--help"))
-    {
-        need_help = true;
-        return;
-    }
     if ((size_t)(argc) - 1 + *n_opt_args < *total_args - *n_opt_args)
     {
         fprintf(
