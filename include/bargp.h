@@ -79,7 +79,11 @@ size_t get_hash_key(const struct VTable* vtable, const char key);
 size_t get_hash_name(const struct VTable* vtable, const char* argdef);
 
 
-void help_fmt();
+void help_fmt(
+    const struct VTable* vtable,
+    const struct ArgumentDefinition* argdefs,
+    const size_t total_args
+);
 
 
 int parse_args(

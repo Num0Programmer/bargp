@@ -4,6 +4,9 @@
 #include "../include/bargp.h"
 
 
+static bool need_help = false;
+
+
 void* __parse_value(const char* value, const struct ArgumentDefinition* argdef)
 {
     void* mem = NULL;
@@ -168,8 +171,12 @@ size_t get_hash_name(const struct VTable* vtable, const char* name)
 }
 
 
-void help_fmt()
-{
+void help_fmt(
+        const struct VTable* vtable,
+        const struct ArgumentDefinition* argdefs,
+        const size_t total_args
+) {
+    printf("Usage: [BIN]");
     exit(0);
 }
 
@@ -187,9 +194,10 @@ int parse_args(
     const struct ArgumentDefinition* argdef = NULL;
 
 
-    if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0) help_fmt();
+    if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0) need_help = true;
     count_args(&total_args, &n_opt_args, argdefs, argv, argc);
     vtable_create(vtable, total_args, n_opt_args, argdefs);
+    if (need_help) help_fmt(vtable, argdefs, total_args);
 
     for (size_t i = 1; i < argc; i += 1)
     {
