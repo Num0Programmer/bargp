@@ -4,6 +4,9 @@
 #include "../include/bargp.h"
 
 
+static bool need_help = false;
+
+
 void* __parse_value(const char* value, const struct ArgumentDefinition* argdef)
 {
     void* mem = NULL;
@@ -83,8 +86,13 @@ void* __parse_list(const char* value, const struct ArgumentDefinition* argdef)
 }
 
 
-void count_args(size_t* total_args, size_t* n_opt_args, const struct ArgumentDefinition* argdefs)
-{
+void count_args(
+        size_t* total_args,
+        size_t* n_opt_args,
+        const struct ArgumentDefinition* argdefs,
+        const char** argv,
+        const int argc
+) {
     size_t i = 0;
     *total_args = 0;
     *n_opt_args = 0;
@@ -99,6 +107,32 @@ void count_args(size_t* total_args, size_t* n_opt_args, const struct ArgumentDef
         }
         *total_args += 1;
         i += 1;
+    }
+
+    if (strcmp(argv[1], "-h") || strcmp(argv[1], "--help"))
+    {
+        need_help = true;
+        return;
+    }
+    if ((size_t)(argc) - 1 + *n_opt_args < *total_args - *n_opt_args)
+    {
+        fprintf(
+            stderr,
+            "Too few arguments! Expected %lu, but received %lu\n",
+            *total_args - *n_opt_args,
+            (size_t)(argc - 1 + n_opt_args)
+        );
+        exit(BARGP_TOO_FEW_ARGUMENTS);
+    }
+    else if (*total_args - *n_opt_args < (size_t)(argc) - 1 - *n_opt_args)
+    {
+        fprintf(
+            stderr,
+            "Too many arguments! Expected %lu, but received %d\n",
+            *total_args - *n_opt_args,
+            argc - 1
+        );
+        exit(BARGP_TOO_MANY_ARGUMENTS);
     }
 }
 
@@ -142,6 +176,12 @@ size_t get_hash_name(const struct VTable* vtable, const char* name)
 }
 
 
+void help_fmt()
+{
+    exit(0);
+}
+
+
 int parse_args(
         struct VTable* vtable,
         const int argc,
@@ -152,6 +192,7 @@ int parse_args(
     const struct ArgumentDefinition* argdef = NULL;
 
 
+    if (need_help) help_fmt();
     for (size_t i = 1; i < argc; i += 1)
     {
         // try optional argument

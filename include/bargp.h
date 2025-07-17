@@ -11,8 +11,8 @@
 #define BARGP_SUCCESS 0
 // general error codes
 #define BARGP_FAILURE 1
-#define BARGP_TOO_FEW_ARGUMENTS 60;
-#define BARGP_TOO_MANY_ARGUMENTS 70;
+#define BARGP_TOO_FEW_ARGUMENTS 60
+#define BARGP_TOO_MANY_ARGUMENTS 70
 
 /* hash table construction */
 #define BARGP_MAX_NAME_LEN 64
@@ -55,7 +55,13 @@ struct VTable {
 };
 
 
-void count_args(size_t* total_args, size_t* n_opt_args, const struct ArgumentDefinition* argdefs);
+void count_args(
+    size_t* total_args,
+    size_t* n_opt_args,
+    const struct ArgumentDefinition* argdefs,
+    const char** argv,
+    const int argc
+);
 
 
 void* get_arg_index(const struct VTable* vtable, const size_t index);
@@ -71,6 +77,9 @@ size_t get_hash_key(const struct VTable* vtable, const char key);
 
 
 size_t get_hash_name(const struct VTable* vtable, const char* argdef);
+
+
+void help_fmt();
 
 
 int parse_args(struct VTable* vtable, const int argc, const char** argv);

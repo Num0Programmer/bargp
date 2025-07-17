@@ -67,28 +67,7 @@ int main(int argc, char** argv)
 
     args.bg_color = 0;
 
-    count_args(&total_args, &n_opt_args, argdefs);
-    if (argc - 1 + n_opt_args < total_args - n_opt_args)
-    {
-        fprintf(
-            stderr,
-            "Too few arguments! Expected %lu, but received %lu\n",
-            total_args - n_opt_args,
-            (size_t)(argc - 1 + n_opt_args)
-        );
-        return BARGP_TOO_FEW_ARGUMENTS;
-    }
-    else if (total_args - n_opt_args < argc - 1 - n_opt_args)
-    {
-        fprintf(
-            stderr,
-            "Too many arguments! Expected %lu, but received %d\n",
-            total_args - n_opt_args,
-            argc - 1
-        );
-        return BARGP_TOO_MANY_ARGUMENTS;
-    }
-
+    count_args(&total_args, &n_opt_args, argdefs, (const char**)(argv), argc);
     vtable_create(&vtable, total_args, n_opt_args, argdefs);
     parse_res = parse_args(&vtable, argc, (const char**)(argv));
     if (parse_res != BARGP_SUCCESS)
