@@ -205,17 +205,30 @@ void help_fmt(const struct VTable* vtable, const struct ArgumentDefinition* argd
     {
         tablei = get_hash_name(vtable, argdefs[i].name);
         sprintf(
-            arg_names_keys,
-            "-%c, --%s",
-            vtable->namestoargs[tablei].argdef->key,
-            vtable->namestoargs[tablei].argdef->name
-        );
-        sprintf(
             arg_desc,
             "%s",
             vtable->namestoargs[tablei].argdef->desc
         );
-        printf("\t%-16s%s\n", arg_names_keys, arg_desc);
+        if (vtable->namestoargs[tablei].argdef->key)
+        {
+            sprintf(
+                arg_names_keys,
+                "-%c, --%s",
+                vtable->namestoargs[tablei].argdef->key,
+                vtable->namestoargs[tablei].argdef->name
+            );
+            printf("\t%-16s%s\n", arg_names_keys, arg_desc);
+        }
+        else
+        {
+            sprintf(
+                arg_names_keys,
+                "%4s--%s",
+                "",
+                vtable->namestoargs[tablei].argdef->name
+            );
+            printf("\t%-16s%s\n", arg_names_keys, arg_desc);
+        }
     }
 
     exit(0);
