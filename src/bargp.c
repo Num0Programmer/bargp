@@ -196,7 +196,7 @@ int parse_args(
 ) {
     size_t tablei;
     size_t statsi = 0;
-    size_t total_args = 0;
+    size_t total_args = 0;  // TODO: fix notion of the notion of total arguments
     size_t n_opt_args = 0;
     const struct ArgumentDefinition* argdef = NULL;
 
