@@ -115,7 +115,7 @@ void count_args(
         i += 1;
     }
 
-    if (strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0)
+    if (strcmp(argv[1], BARGP_HELP_OPTION) == 0)
     {
         need_help = true;
         return;

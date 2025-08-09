@@ -24,6 +24,7 @@
 
 
 /* help formatting */
+#define BARGP_HELP_OPTION "--help"
 extern const char* usage;
 extern const char* desc;
 
