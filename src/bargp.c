@@ -184,21 +184,22 @@ size_t get_hash_name(const struct VTable* vtable, const char* name)
 
 void help_fmt(const struct VTable* vtable, const struct ArgumentDefinition* argdefs)
 {
+    size_t tablei;
+
+
     printf("Usage: %s", usage);
     printf("%s", desc);
 
     printf("\nArgument(s):\n");
     for (size_t i = 0; i < vtable->n_stats && vtable->stats[i].argdef->desc != NULL; i += 1)
     {
-        printf("%15s", vtable->stats[i].argdef->name);
-        for (size_t j = 0; j < 10; j += 1)
-        {
-            printf(" ");
-        }
-        printf("%s", vtable->stats[i].argdef->desc);
-        printf("\n");
+        printf("%16s\t%s\n", vtable->stats[i].argdef->name, vtable->stats[i].argdef->desc);
     }
+
     printf("\nOption(s):\n");
+    for (size_t i = 0; argdefs[i].type != 0 && argdefs[i].is_optional; i += 1)
+    {
+    }
 
     exit(0);
 }
