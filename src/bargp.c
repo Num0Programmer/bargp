@@ -185,6 +185,8 @@ size_t get_hash_name(const struct VTable* vtable, const char* name)
 void help_fmt(const struct VTable* vtable, const struct ArgumentDefinition* argdefs)
 {
     size_t tablei;
+    char arg_names_keys[70] = { 0 };
+    char arg_desc[512] = { 0 };
 
 
     printf("Usage: %s", usage);
@@ -193,12 +195,27 @@ void help_fmt(const struct VTable* vtable, const struct ArgumentDefinition* argd
     printf("\nArgument(s):\n");
     for (size_t i = 0; i < vtable->n_stats && vtable->stats[i].argdef->desc != NULL; i += 1)
     {
-        printf("%16s\t%s\n", vtable->stats[i].argdef->name, vtable->stats[i].argdef->desc);
+        sprintf(arg_names_keys, "%s", vtable->stats[i].argdef->name);
+        sprintf(arg_desc, "%s", vtable->stats[i].argdef->desc);
+        printf("\t%-16s%s\n", arg_names_keys, arg_desc);
     }
 
     printf("\nOption(s):\n");
     for (size_t i = 0; argdefs[i].type != 0 && argdefs[i].is_optional; i += 1)
     {
+        tablei = get_hash_name(vtable, argdefs[i].name);
+        sprintf(
+            arg_names_keys,
+            "-%c, --%s",
+            vtable->namestoargs[tablei].argdef->key,
+            vtable->namestoargs[tablei].argdef->name
+        );
+        sprintf(
+            arg_desc,
+            "%s",
+            vtable->namestoargs[tablei].argdef->desc
+        );
+        printf("\t%-16s%s\n", arg_names_keys, arg_desc);
     }
 
     exit(0);
