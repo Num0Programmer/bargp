@@ -188,10 +188,16 @@ void help_fmt(const struct VTable* vtable, const struct ArgumentDefinition* argd
     printf("%s", desc);
 
     printf("\nArgument(s):\n");
-    // for (size_t i = 0; i < vtable->n_stats; i += 1)
-    // {
-    //     printf("%5s", vtable->stats[i].argdef->name);
-    // }
+    for (size_t i = 0; i < vtable->n_stats && vtable->stats[i].argdef->desc != NULL; i += 1)
+    {
+        printf("%15s", vtable->stats[i].argdef->name);
+        for (size_t j = 0; j < 10; j += 1)
+        {
+            printf(" ");
+        }
+        printf("%s", vtable->stats[i].argdef->desc);
+        printf("\n");
+    }
     printf("\nOption(s):\n");
 
     exit(0);

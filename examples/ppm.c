@@ -25,9 +25,9 @@ const struct ArgumentDefinition argdefs[] = {
         .is_list     = true,
         .desc        = "Draws a rectangle",
     },
-    { .name =      "out", .type = STRING, .desc = BARGP_NO_DESC },
-    { .name =    "width", .type =   LONG, .desc = BARGP_NO_DESC },
-    { .name =   "height", .type =   LONG, .desc = BARGP_NO_DESC },
+    { .name =      "out", .type = STRING, .desc =              "Name of PPM file" },
+    { .name =    "width", .type =   LONG, .desc =  "Width of the image in pixels" },
+    { .name =   "height", .type =   LONG, .desc = "Height of the image in pixels" },
     0
 };
 
