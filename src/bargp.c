@@ -266,6 +266,7 @@ void vtable_create(
         const struct ArgumentDefinition* argdefs
 ) {
     size_t tablei;
+    size_t i = 0;
     size_t statsi = 0;
 
 
@@ -275,7 +276,7 @@ void vtable_create(
     vtable->keystoargs = malloc(sizeof(struct ArgDefToValue) * vtable->n_opt_keys);
     vtable->namestoargs = malloc(sizeof(struct ArgDefToValue) * vtable->n_opt_names);
     vtable->stats = malloc(sizeof(struct ArgDefToValue) * vtable->n_stats);
-    for (size_t i = 0; i < total_args; i += 1)
+    while (argdefs[i].type != 0)
     {
         if (argdefs[i].is_optional)
         {
@@ -293,6 +294,7 @@ void vtable_create(
             vtable->stats[statsi].argdef = &argdefs[i];
             statsi += 1;
         }
+        i += 1;
     }
 }
 
