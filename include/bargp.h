@@ -24,6 +24,7 @@
 
 /* help formatting */
 extern const char* usage;
+extern const char* desc;
 
 
 enum ArgType {

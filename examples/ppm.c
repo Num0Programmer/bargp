@@ -7,7 +7,8 @@
 #define N_CHANNELS 3
 
 
-const char* usage = "./ppm [OPTIONS]... OUTFILE WIDTH HEIGHT";
+const char* usage = "./ppm [OPTIONS]... OUT WIDTH HEIGHT\n";
+const char* desc = "Stencil application - produces a PPM image OUT of WIDTH and HEIGHT size\n";
 const struct ArgumentDefinition argdefs[] = {
     { .name = "bg-color", .key = 'b', .type = LONG, .is_optional = true },
     { .name =     "rect", .key = 'r', .type = LONG, .is_optional = true, .is_list = true },

@@ -182,6 +182,7 @@ void help_fmt(
         const size_t total_args
 ) {
     printf("Usage: %s", usage);
+    printf("%s", desc);
     exit(0);
 }
 
