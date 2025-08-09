@@ -10,8 +10,21 @@
 const char* usage = "./ppm [OPTIONS]... OUT WIDTH HEIGHT\n";
 const char* desc = "Stencil application - produces a PPM image OUT of WIDTH and HEIGHT size\n";
 const struct ArgumentDefinition argdefs[] = {
-    { .name = "bg-color", .key = 'b', .type = LONG, .is_optional = true },
-    { .name =     "rect", .key = 'r', .type = LONG, .is_optional = true, .is_list = true },
+    {
+        .name        = "bg-color",
+        .key         = 'b',
+        .type        = LONG,
+        .is_optional = true,
+        .desc        = "Initializes the image with a solid color",
+    },
+    {
+        .name        = "rect",
+        .key         = 'r',
+        .type        = LONG,
+        .is_optional = true,
+        .is_list     = true,
+        .desc        = "Draws a rectangle",
+    },
     { .name =      "out", .type = STRING },
     { .name =    "width", .type =   LONG },
     { .name =   "height", .type =   LONG },

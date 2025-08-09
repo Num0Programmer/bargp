@@ -183,6 +183,7 @@ void help_fmt(
 ) {
     printf("Usage: %s", usage);
     printf("%s", desc);
+
     exit(0);
 }
 
