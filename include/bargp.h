@@ -17,6 +17,7 @@
 /* hash table construction */
 #define BARGP_MAX_NAME_LEN 64
 #define BARGP_N_CHARS_ALPHA 27  // every letter [a-z][A-Z] and '-'
+#define BARGP_NO_DESC ""
 
 /* parsing list of values */
 #define BARGP_LIST_DELIM ","
@@ -64,6 +65,7 @@ struct VTable {
 void count_args(
     size_t* total_args,
     size_t* n_opt_args,
+    size_t* n_stat_args,
     const struct ArgumentDefinition* argdefs,
     const char** argv,
     const int argc
@@ -85,11 +87,7 @@ size_t get_hash_key(const struct VTable* vtable, const char key);
 size_t get_hash_name(const struct VTable* vtable, const char* argdef);
 
 
-void help_fmt(
-    const struct VTable* vtable,
-    const struct ArgumentDefinition* argdefs,
-    const size_t total_args
-);
+void help_fmt(const struct VTable* vtable, const struct ArgumentDefinition* argdefs);
 
 
 int parse_args(
@@ -104,6 +102,7 @@ void vtable_create(
     struct VTable* vtable,
     const size_t total_args,
     const size_t n_opt_args,
+    const size_t n_stat_args,
     const struct ArgumentDefinition* argdefs
 );
 

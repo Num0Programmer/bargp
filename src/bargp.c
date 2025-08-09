@@ -89,6 +89,7 @@ void* __parse_list(const char* value, const struct ArgumentDefinition* argdef)
 void count_args(
         size_t* total_args,
         size_t* n_opt_args,
+        size_t* n_stat_args,
         const struct ArgumentDefinition* argdefs,
         const char** argv,
         const int argc
@@ -96,6 +97,7 @@ void count_args(
     size_t i = 0;
     *total_args = 0;
     *n_opt_args = 0;
+    *n_stat_args = 0;
 
 
     while(argdefs[i].type != 0)
@@ -104,6 +106,10 @@ void count_args(
         {
             *n_opt_args += 1;
             *total_args += 1;
+        }
+        else
+        {
+            *n_stat_args += 1;
         }
         *total_args += 1;
         i += 1;
@@ -176,13 +182,17 @@ size_t get_hash_name(const struct VTable* vtable, const char* name)
 }
 
 
-void help_fmt(
-        const struct VTable* vtable,
-        const struct ArgumentDefinition* argdefs,
-        const size_t total_args
-) {
+void help_fmt(const struct VTable* vtable, const struct ArgumentDefinition* argdefs)
+{
     printf("Usage: %s", usage);
     printf("%s", desc);
+
+    printf("\nArgument(s):\n");
+    // for (size_t i = 0; i < vtable->n_stats; i += 1)
+    // {
+    //     printf("%5s", vtable->stats[i].argdef->name);
+    // }
+    printf("\nOption(s):\n");
 
     exit(0);
 }
@@ -198,12 +208,13 @@ int parse_args(
     size_t statsi = 0;
     size_t total_args = 0;  // TODO: fix notion of the notion of total arguments
     size_t n_opt_args = 0;
+    size_t n_stat_args = 0;
     const struct ArgumentDefinition* argdef = NULL;
 
 
-    count_args(&total_args, &n_opt_args, argdefs, argv, argc);
-    vtable_create(vtable, total_args, n_opt_args, argdefs);
-    if (need_help) help_fmt(vtable, argdefs, total_args);
+    count_args(&total_args, &n_opt_args, &n_stat_args, argdefs, argv, argc);
+    vtable_create(vtable, total_args, n_opt_args, n_stat_args, argdefs);
+    if (need_help) help_fmt(vtable, argdefs);
 
     for (size_t i = 1; i < argc; i += 1)
     {
@@ -263,6 +274,7 @@ void vtable_create(
         struct VTable* vtable,
         const size_t total_args,
         const size_t n_opt_args,
+        const size_t n_stat_args,
         const struct ArgumentDefinition* argdefs
 ) {
     size_t tablei;
@@ -272,7 +284,7 @@ void vtable_create(
 
     vtable->n_opt_keys = BARGP_N_CHARS_ALPHA - 1;  // removes '-'
     vtable->n_opt_names = BARGP_MAX_NAME_LEN * BARGP_N_CHARS_ALPHA;
-    vtable->n_stats = total_args - n_opt_args;
+    vtable->n_stats = n_stat_args;
     vtable->keystoargs = malloc(sizeof(struct ArgDefToValue) * vtable->n_opt_keys);
     vtable->namestoargs = malloc(sizeof(struct ArgDefToValue) * vtable->n_opt_names);
     vtable->stats = malloc(sizeof(struct ArgDefToValue) * vtable->n_stats);

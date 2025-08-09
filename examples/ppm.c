@@ -25,9 +25,9 @@ const struct ArgumentDefinition argdefs[] = {
         .is_list     = true,
         .desc        = "Draws a rectangle",
     },
-    { .name =      "out", .type = STRING },
-    { .name =    "width", .type =   LONG },
-    { .name =   "height", .type =   LONG },
+    { .name =      "out", .type = STRING, .desc = BARGP_NO_DESC },
+    { .name =    "width", .type =   LONG, .desc = BARGP_NO_DESC },
+    { .name =   "height", .type =   LONG, .desc = BARGP_NO_DESC },
     0
 };
 
