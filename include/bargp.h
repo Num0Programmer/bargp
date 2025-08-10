@@ -76,26 +76,25 @@ void count_args(
 );
 
 
-void* get_arg_index(const struct VTable* vtable, const size_t index);
+void* get_arg_index(const size_t index);
 
 
-void* get_arg_key(const struct VTable* vtable, const char key);
+void* get_arg_key(const char key);
 
 
-void* get_arg_name(const struct VTable* vtable, const char* name);
+void* get_arg_name(const char* name);
 
 
-size_t get_hash_key(const struct VTable* vtable, const char key);
+size_t get_hash_key(const char key);
 
 
-size_t get_hash_name(const struct VTable* vtable, const char* argdef);
+size_t get_hash_name(const char* argdef);
 
 
-void help_fmt(const struct VTable* vtable, const struct ArgumentDefinition* argdefs);
+void help_fmt(const struct ArgumentDefinition* argdefs);
 
 
 int parse_args(
-    struct VTable* vtable,
     const int argc,
     const char** argv,
     const struct ArgumentDefinition* argdefs
@@ -103,14 +102,13 @@ int parse_args(
 
 
 void vtable_create(
-    struct VTable* vtable,
     const size_t n_opt_args,
     const size_t n_stat_args,
     const struct ArgumentDefinition* argdefs
 );
 
 
-void vtable_destroy(struct VTable* vtable);
+void vtable_destroy();
 
 
 #endif  /* BARGP_H */
