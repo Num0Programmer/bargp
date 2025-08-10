@@ -78,13 +78,12 @@ int main(int argc, char** argv)
     size_t buf_size = 0;
     int parse_res = BARGP_SUCCESS;
     struct Arguments args = { 0 };
-    struct VTable vtable = { 0 };
     struct Rect* rect = NULL;
 
 
     args.bg_color = 0;
 
-    parse_res = parse_args(&vtable, argc, (const char**)(argv), argdefs);
+    parse_res = parse_args(argc, (const char**)(argv), argdefs);
     if (parse_res != BARGP_SUCCESS)
     {
         fprintf(stderr, "Parsing failed: %d\n", parse_res);
@@ -92,11 +91,11 @@ int main(int argc, char** argv)
     }
 
 
-    args.out = (char*)get_arg_index(&vtable, 0);
-    args.width = *(size_t*)get_arg_index(&vtable, 1);
-    args.height = *(size_t*)get_arg_index(&vtable, 2);
-    if ((value = get_arg_key(&vtable, 'b')) != NULL) args.bg_color = *(char*)(value);
-    if ((value = get_arg_key(&vtable, 'r')) != NULL)
+    args.out = (char*)get_arg_index(0);
+    args.width = *(size_t*)get_arg_index(1);
+    args.height = *(size_t*)get_arg_index(2);
+    if ((value = get_arg_key('b')) != NULL) args.bg_color = *(char*)(value);
+    if ((value = get_arg_key('r')) != NULL)
     {
         rect = malloc(sizeof(struct Rect));
         rect->pos[0] = ((size_t*)(value))[0];
@@ -132,7 +131,7 @@ int main(int argc, char** argv)
     }
 
 exit:
-    vtable_destroy(&vtable);
+    vtable_destroy();
 
     return parse_res;
 }
