@@ -106,7 +106,6 @@ int parse_args(
 
 void vtable_create(
     struct VTable* vtable,
-    const size_t total_args,
     const size_t n_opt_args,
     const size_t n_stat_args,
     const struct ArgumentDefinition* argdefs

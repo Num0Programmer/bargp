@@ -252,7 +252,7 @@ int parse_args(
 
 
     count_args(&total_args, &n_opt_args, &n_stat_args, argdefs, argv, argc);
-    vtable_create(vtable, total_args, n_opt_args, n_stat_args, argdefs);
+    vtable_create(vtable, n_opt_args, n_stat_args, argdefs);
     if (need_help) help_fmt(vtable, argdefs);
 
     for (size_t i = 1; i < argc; i += 1)
@@ -311,7 +311,6 @@ int parse_args(
 
 void vtable_create(
         struct VTable* vtable,
-        const size_t total_args,
         const size_t n_opt_args,
         const size_t n_stat_args,
         const struct ArgumentDefinition* argdefs
