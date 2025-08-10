@@ -116,7 +116,7 @@ void count_args(
         need_help = true;
         return;
     }
-    if ((size_t)(argc) - 1 < *n_stat_args)
+    else if ((size_t)(argc) - 1 < *n_stat_args)
     {
         fprintf(
             stderr,

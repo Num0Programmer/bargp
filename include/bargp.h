@@ -12,7 +12,6 @@
 // general error codes
 #define BARGP_FAILURE 1
 #define BARGP_TOO_FEW_ARGUMENTS 60
-#define BARGP_TOO_MANY_ARGUMENTS 70
 
 /* hash table construction */
 #define BARGP_MAX_NAME_LEN 64
