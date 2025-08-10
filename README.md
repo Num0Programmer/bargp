@@ -17,3 +17,6 @@ sh install.sh /path/to/install
 ## Dynamic Linking
 
 ## Static Linking
+```sh
+gcc -I/path/to/install program.c -o program
+```
