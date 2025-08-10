@@ -12,7 +12,6 @@
 // general error codes
 #define BARGP_FAILURE 1
 #define BARGP_TOO_FEW_ARGUMENTS 60
-#define BARGP_TOO_MANY_ARGUMENTS 70
 
 /* hash table construction */
 #define BARGP_MAX_NAME_LEN 64
@@ -69,7 +68,6 @@ struct VTable {
 
 
 void count_args(
-    size_t* total_args,
     size_t* n_opt_args,
     size_t* n_stat_args,
     const struct ArgumentDefinition* argdefs,
@@ -106,7 +104,6 @@ int parse_args(
 
 void vtable_create(
     struct VTable* vtable,
-    const size_t total_args,
     const size_t n_opt_args,
     const size_t n_stat_args,
     const struct ArgumentDefinition* argdefs
