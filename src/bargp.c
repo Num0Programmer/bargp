@@ -87,7 +87,6 @@ void* __parse_list(const char* value, const struct ArgumentDefinition* argdef)
 
 
 void count_args(
-        size_t* total_args,
         size_t* n_opt_args,
         size_t* n_stat_args,
         const struct ArgumentDefinition* argdefs,
@@ -95,7 +94,6 @@ void count_args(
         const int argc
 ) {
     size_t i = 0;
-    *total_args = 0;
     *n_opt_args = 0;
     *n_stat_args = 0;
 
@@ -105,13 +103,11 @@ void count_args(
         if (argdefs[i].is_optional)
         {
             *n_opt_args += 1;
-            *total_args += 1;
         }
         else
         {
             *n_stat_args += 1;
         }
-        *total_args += 1;
         i += 1;
     }
 
@@ -120,25 +116,15 @@ void count_args(
         need_help = true;
         return;
     }
-    if ((size_t)(argc) - 1 + *n_opt_args < *total_args - *n_opt_args)
+    if ((size_t)(argc) - 1 < *n_stat_args)
     {
         fprintf(
             stderr,
-            "Too few arguments! Expected %lu, but received %lu\n",
-            *total_args - *n_opt_args,
-            (size_t)(argc - 1 + n_opt_args)
+            "Too few arguments! Expected at least %lu, but received %lu\n",
+            *n_stat_args,
+            (size_t)(argc - 1)
         );
         exit(BARGP_TOO_FEW_ARGUMENTS);
-    }
-    else if (*total_args - *n_opt_args < (size_t)(argc) - 1 - *n_opt_args)
-    {
-        fprintf(
-            stderr,
-            "Too many arguments! Expected %lu, but received %d\n",
-            *total_args - *n_opt_args,
-            argc - 1
-        );
-        exit(BARGP_TOO_MANY_ARGUMENTS);
     }
 }
 
@@ -245,13 +231,12 @@ int parse_args(
 ) {
     size_t tablei;
     size_t statsi = 0;
-    size_t total_args = 0;  // TODO: fix notion of the notion of total arguments
     size_t n_opt_args = 0;
     size_t n_stat_args = 0;
     const struct ArgumentDefinition* argdef = NULL;
 
 
-    count_args(&total_args, &n_opt_args, &n_stat_args, argdefs, argv, argc);
+    count_args(&n_opt_args, &n_stat_args, argdefs, argv, argc);
     vtable_create(vtable, n_opt_args, n_stat_args, argdefs);
     if (need_help) help_fmt(vtable, argdefs);
 

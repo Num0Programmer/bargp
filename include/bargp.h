@@ -69,7 +69,6 @@ struct VTable {
 
 
 void count_args(
-    size_t* total_args,
     size_t* n_opt_args,
     size_t* n_stat_args,
     const struct ArgumentDefinition* argdefs,
