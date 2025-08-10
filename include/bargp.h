@@ -25,8 +25,10 @@
 
 /* help formatting */
 #define BARGP_HELP_OPTION "--help"
+#define BARGP_NO_POSTAMBLE ""
 extern const char* usage;
 extern const char* desc;
+extern const char* postamble;
 
 
 enum ArgType {

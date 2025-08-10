@@ -230,6 +230,7 @@ void help_fmt(const struct VTable* vtable, const struct ArgumentDefinition* argd
             printf("\t%-16s%s\n", arg_names_keys, arg_desc);
         }
     }
+    if (strlen(postamble) > 0) printf("\n%s", postamble);
 
     exit(0);
 }

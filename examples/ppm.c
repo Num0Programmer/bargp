@@ -9,6 +9,8 @@
 
 const char* usage = "./ppm [OPTIONS]... OUT WIDTH HEIGHT\n";
 const char* desc = "Stencil application - produces a PPM image OUT of WIDTH and HEIGHT size\n";
+const char* postamble = "Report bugs to num0programmer@no.domain";
+// const char* postamble = BARGP_NO_POSTAMBLE;
 const struct ArgumentDefinition argdefs[] = {
     {
         .name        = "bg-color",
