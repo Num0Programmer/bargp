@@ -104,7 +104,7 @@ int main(int argc, char** argv)
     }
 
 exit:
-    vtable_destroy();
+    argtable_destroy();
 
     return parse_res;
 }

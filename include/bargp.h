@@ -57,7 +57,7 @@ struct ArgDefToValue
 };
 
 
-struct VTable {
+struct ArgTable {
     size_t n_opt_keys;
     size_t n_opt_names;
     size_t n_stats;
@@ -101,14 +101,14 @@ int parse_args(
 ); 
 
 
-void vtable_create(
+void argtable_create(
     const size_t n_opt_args,
     const size_t n_stat_args,
     const struct ArgumentDefinition* argdefs
 );
 
 
-void vtable_destroy();
+void argtable_destroy();
 
 
 #endif  /* BARGP_H */

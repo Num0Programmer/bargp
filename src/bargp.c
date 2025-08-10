@@ -5,7 +5,7 @@
 
 
 static bool need_help = false;
-static struct VTable vtable = { 0 };
+static struct ArgTable argtable = { 0 };
 
 
 void* __parse_value(const char* value, const struct ArgumentDefinition* argdef)
@@ -132,25 +132,25 @@ void count_args(
 
 void* get_arg_index(const size_t index)
 {
-    return vtable.stats[index].value;
+    return argtable.stats[index].value;
 }
 
 
 void* get_arg_key(const char key)
 {
-    return vtable.keystoargs[get_hash_key(key)]->value;
+    return argtable.keystoargs[get_hash_key(key)]->value;
 }
 
 
 void* get_arg_name(const char* name)
 {
-    return vtable.namestoargs[get_hash_name(name)].value;
+    return argtable.namestoargs[get_hash_name(name)].value;
 }
 
 
 size_t get_hash_key(const char key)
 {
-    return key % vtable.n_opt_keys;
+    return key % argtable.n_opt_keys;
 }
 
 
@@ -165,7 +165,7 @@ size_t get_hash_name(const char* name)
         nametol += name[i];
     }
 
-    return nametol % vtable.n_opt_names;
+    return nametol % argtable.n_opt_names;
 }
 
 
@@ -181,10 +181,10 @@ void help_fmt(const struct ArgumentDefinition* argdefs)
     printf("%s\n", desc);
 
     printf("\nArgument(s):\n");
-    for (size_t i = 0; i < vtable.n_stats && vtable.stats[i].argdef->desc != NULL; i += 1)
+    for (size_t i = 0; i < argtable.n_stats && argtable.stats[i].argdef->desc != NULL; i += 1)
     {
-        sprintf(arg_names_keys, "%s", vtable.stats[i].argdef->name);
-        sprintf(arg_desc, "%s", vtable.stats[i].argdef->desc);
+        sprintf(arg_names_keys, "%s", argtable.stats[i].argdef->name);
+        sprintf(arg_desc, "%s", argtable.stats[i].argdef->desc);
         printf("\t%-16s%s\n", arg_names_keys, arg_desc);
     }
 
@@ -195,15 +195,15 @@ void help_fmt(const struct ArgumentDefinition* argdefs)
         sprintf(
             arg_desc,
             "%s",
-            vtable.namestoargs[tablei].argdef->desc
+            argtable.namestoargs[tablei].argdef->desc
         );
-        if (vtable.namestoargs[tablei].argdef->key)
+        if (argtable.namestoargs[tablei].argdef->key)
         {
             sprintf(
                 arg_names_keys,
                 "-%c, --%s",
-                vtable.namestoargs[tablei].argdef->key,
-                vtable.namestoargs[tablei].argdef->name
+                argtable.namestoargs[tablei].argdef->key,
+                argtable.namestoargs[tablei].argdef->name
             );
             printf("\t%-16s%s\n", arg_names_keys, arg_desc);
         }
@@ -213,7 +213,7 @@ void help_fmt(const struct ArgumentDefinition* argdefs)
                 arg_names_keys,
                 "%4s--%s",
                 "",
-                vtable.namestoargs[tablei].argdef->name
+                argtable.namestoargs[tablei].argdef->name
             );
             printf("\t%-16s%s\n", arg_names_keys, arg_desc);
         }
@@ -237,7 +237,7 @@ int parse_args(
 
 
     count_args(&n_opt_args, &n_stat_args, argdefs, argv, argc);
-    vtable_create(n_opt_args, n_stat_args, argdefs);
+    argtable_create(n_opt_args, n_stat_args, argdefs);
     if (need_help) help_fmt(argdefs);
 
     for (size_t i = 1; i < argc; i += 1)
@@ -246,45 +246,45 @@ int parse_args(
         if (argv[i][0] == '-' && argv[i][1] == '-')
         {
             tablei = get_hash_name(&argv[i][2]);
-            argdef = vtable.namestoargs[tablei].argdef;
+            argdef = argtable.namestoargs[tablei].argdef;
 
             if (argdef->is_list)
             {
-                vtable.namestoargs[tablei].value = __parse_list(argv[i + 1], argdef);
+                argtable.namestoargs[tablei].value = __parse_list(argv[i + 1], argdef);
             }
             else
             {
-                vtable.namestoargs[tablei].value = __parse_value(argv[i + 1], argdef);
+                argtable.namestoargs[tablei].value = __parse_value(argv[i + 1], argdef);
             }
             i += 1;
         }
         else if (argv[i][0] == '-')
         {
             tablei = get_hash_key(argv[i][1]);
-            argdef = vtable.keystoargs[tablei]->argdef;
+            argdef = argtable.keystoargs[tablei]->argdef;
 
             if (argdef->is_list)
             {
-                vtable.keystoargs[tablei]->value = __parse_list(argv[i + 1], argdef);
+                argtable.keystoargs[tablei]->value = __parse_list(argv[i + 1], argdef);
             }
             else
             {
-                vtable.keystoargs[tablei]->value = __parse_value(argv[i + 1], argdef);
+                argtable.keystoargs[tablei]->value = __parse_value(argv[i + 1], argdef);
             }
             i += 1;
         }
         // try static argument
         else
         {
-            argdef = vtable.stats[statsi].argdef;
+            argdef = argtable.stats[statsi].argdef;
 
             if (argdef->is_list)
             {
-                vtable.stats[statsi].value = __parse_list(argv[i], argdef);
+                argtable.stats[statsi].value = __parse_list(argv[i], argdef);
             }
             else
             {
-                vtable.stats[statsi].value = __parse_value(argv[i], argdef);
+                argtable.stats[statsi].value = __parse_value(argv[i], argdef);
             }
             statsi += 1;
         }
@@ -294,7 +294,7 @@ int parse_args(
 }
 
 
-void vtable_create(
+void argtable_create(
         const size_t n_opt_args,
         const size_t n_stat_args,
         const struct ArgumentDefinition* argdefs
@@ -304,28 +304,28 @@ void vtable_create(
     size_t statsi = 0;
 
 
-    vtable.n_opt_keys = BARGP_N_CHARS_ALPHA - 1;  // removes '-'
-    vtable.n_opt_names = BARGP_MAX_NAME_LEN * BARGP_N_CHARS_ALPHA;
-    vtable.n_stats = n_stat_args;
-    vtable.keystoargs = malloc(sizeof(struct ArgDefToValue) * vtable.n_opt_keys);
-    vtable.namestoargs = malloc(sizeof(struct ArgDefToValue) * vtable.n_opt_names);
-    vtable.stats = malloc(sizeof(struct ArgDefToValue) * vtable.n_stats);
+    argtable.n_opt_keys = BARGP_N_CHARS_ALPHA - 1;  // removes '-'
+    argtable.n_opt_names = BARGP_MAX_NAME_LEN * BARGP_N_CHARS_ALPHA;
+    argtable.n_stats = n_stat_args;
+    argtable.keystoargs = malloc(sizeof(struct ArgDefToValue) * argtable.n_opt_keys);
+    argtable.namestoargs = malloc(sizeof(struct ArgDefToValue) * argtable.n_opt_names);
+    argtable.stats = malloc(sizeof(struct ArgDefToValue) * argtable.n_stats);
     while (argdefs[i].type != 0)
     {
         if (argdefs[i].is_optional)
         {
             tablei = get_hash_name(argdefs[i].name);
-            vtable.namestoargs[tablei].argdef = &argdefs[i];
+            argtable.namestoargs[tablei].argdef = &argdefs[i];
 
             if (argdefs[i].key)
             {
-                vtable.keystoargs[get_hash_key(argdefs[i].key)] =
-                    &vtable.namestoargs[tablei];
+                argtable.keystoargs[get_hash_key(argdefs[i].key)] =
+                    &argtable.namestoargs[tablei];
             }
         }
         else
         {
-            vtable.stats[statsi].argdef = &argdefs[i];
+            argtable.stats[statsi].argdef = &argdefs[i];
             statsi += 1;
         }
         i += 1;
@@ -333,19 +333,19 @@ void vtable_create(
 }
 
 
-void vtable_destroy()
+void argtable_destroy()
 {
-    for (size_t i = 0; i < vtable.n_opt_names; i += 1)
+    for (size_t i = 0; i < argtable.n_opt_names; i += 1)
     {
-        free(vtable.namestoargs[i].value);
+        free(argtable.namestoargs[i].value);
     }
-    for (size_t i = 0; i < vtable.n_stats; i += 1)
+    for (size_t i = 0; i < argtable.n_stats; i += 1)
     {
-        free(vtable.stats[i].value);
+        free(argtable.stats[i].value);
     }
-    free(vtable.keystoargs);
-    free(vtable.namestoargs);
-    free(vtable.stats);
+    free(argtable.keystoargs);
+    free(argtable.namestoargs);
+    free(argtable.stats);
 }
 
 
