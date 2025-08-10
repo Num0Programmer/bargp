@@ -89,15 +89,14 @@ const struct ArgumentDefinition argdefs[] = {
 This means the program accepts a total of 2 arguments, but will exit if a value for the 'positional-arg' is not provided. Please refer to the [ArgumentDefinition Specs]() for more information on the fields of this structure and how they are used.
 
 ### Parsing Arguments
-No you are ready to parse arguments! All which is required is initializing a table into which the arguments and their values can be stored and calling the 'parse_args()' function. Below if a sample main program to demonstrate how to initialize your program and parse the arguments:
+Now you are ready to parse arguments! All which is required is calling the 'parse_args()' function. Below if a sample main program to demonstrate how to initialize your program and parse the arguments:
 ```c
 int main(int argc, char** argv)
 {
     int parse_res = BARGP_SUCCESS;
-    struct VTable vtable = { 0 };
 
 
-    parse_res = parse_args(&vtable, argc, (const char**)(argv), argdefs);
+    parse_res = parse_args(argc, (const char**)(argv), argdefs);
     if (parse_res != BARGP_SUCCESS)
     {
         fprintf(stderr, "Parsing failed: %d\n", parse_res);
@@ -105,7 +104,7 @@ int main(int argc, char** argv)
     }
 
 exit:
-    vtable_destroy(&vtable);
+    vtable_destroy();
 
     return parse_res;
 }
