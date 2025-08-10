@@ -50,3 +50,18 @@ However, you will still be required to link with '-lbargp', but the final comman
 ```sh
 gcc program.c -o program -lbargp
 ```
+
+## Quick Start
+A few lines are required before any parsing can be done. In a new file, specify the 'title' and 'version' of your program. You can define the 'usage' which shows how to call your program from the terminal. The 'desc' or description, which provides a little information about your program. The 'postamble' which allows you to include any extra information at the end of the help message. This could be information such as where to submit bug reports.
+```c
+#include <bargp.h>
+
+const char* author = "Your Name";
+const char* title = "Your Program Name";
+const char* version = "0.1";
+const char* usage = "./program [OPTIONS]... [ARGUMENTS]...";
+const char* desc = "What your program does";
+const char* postamble = "Other information";
+// const char* postamble = BARGP_NO_POSTAMBLE;
+```
+If you do not have anything to put in the postamble, then you can set it to an empty string or use the 'BARGP_NO_POSTAMBLE' symbolic constant.
