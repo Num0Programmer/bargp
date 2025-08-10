@@ -189,8 +189,9 @@ void help_fmt(const struct VTable* vtable, const struct ArgumentDefinition* argd
     char arg_desc[512] = { 0 };
 
 
-    printf("Usage: %s", usage);
-    printf("%s", desc);
+    printf("%s (%s)\n", title, version);
+    printf("\nUsage: %s\n", usage);
+    printf("%s\n", desc);
 
     printf("\nArgument(s):\n");
     for (size_t i = 0; i < vtable->n_stats && vtable->stats[i].argdef->desc != NULL; i += 1)

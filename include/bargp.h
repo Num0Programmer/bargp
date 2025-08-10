@@ -26,6 +26,9 @@
 /* help formatting */
 #define BARGP_HELP_OPTION "--help"
 #define BARGP_NO_POSTAMBLE ""
+extern const char* author;
+extern const char* title;
+extern const char* version;
 extern const char* usage;
 extern const char* desc;
 extern const char* postamble;
