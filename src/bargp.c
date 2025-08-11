@@ -237,7 +237,7 @@ int parse_args(
 
 
     count_args(&n_opt_args, &n_stat_args, argdefs, argv, argc);
-    argtable_create(n_opt_args, n_stat_args, argdefs);
+    init_argtable(n_opt_args, n_stat_args, argdefs);
     if (need_help) help_fmt(argdefs);
 
     for (size_t i = 1; i < argc; i += 1)
@@ -294,7 +294,7 @@ int parse_args(
 }
 
 
-void argtable_create(
+void init_argtable(
         const size_t n_opt_args,
         const size_t n_stat_args,
         const struct ArgumentDefinition* argdefs
@@ -333,7 +333,7 @@ void argtable_create(
 }
 
 
-void argtable_destroy()
+void free_argtable()
 {
     for (size_t i = 0; i < argtable.n_opt_names; i += 1)
     {

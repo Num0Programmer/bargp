@@ -101,14 +101,14 @@ int parse_args(
 ); 
 
 
-void argtable_create(
+void init_argtable(
     const size_t n_opt_args,
     const size_t n_stat_args,
     const struct ArgumentDefinition* argdefs
 );
 
 
-void argtable_destroy();
+void free_argtable();
 
 
 #endif  /* BARGP_H */
