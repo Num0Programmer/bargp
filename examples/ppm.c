@@ -131,7 +131,7 @@ int main(int argc, char** argv)
     }
 
 exit:
-    argtable_destroy();
+    free_argtable();
 
     return parse_res;
 }
