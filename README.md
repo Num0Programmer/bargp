@@ -22,7 +22,7 @@ No matter where you have installed the library, you will have to link using '-lb
 gcc program.c -o program -lbargp
 ```
 
-If you have installed the library to different directory, then a few options are available.
+If you have installed the library to a different directory, then a couple options are available.
 
 ### Option 1
 Explicity specify where to find the header and shared library using the '-I' and '-L' options.
@@ -35,7 +35,8 @@ Explicity specify where to find the header and shared library using the '-I' and
 gcc -I/path/to/install/include -L/path/to/install/lib program.c -o program
 ```
 
-However, you can avoid the above command by setting the 'C_INCLUDE_PATH' and 'LD_LIBRARY_PATHS' so GCC will automatically search the custom directory by doing the following:
+### Option 2
+It is possible avoid the above command by setting the 'C_INCLUDE_PATH' and 'LD_LIBRARY_PATHS' so GCC will automatically search the custom directory by doing the following:
 ```sh
 export C_INCLUDE_PATH=$C_INCLUDE_PATH:/path/to/install/include
 ```
