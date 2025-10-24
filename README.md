@@ -6,14 +6,14 @@ A general purpose, cross-platform argument parser for terminal applications writ
 ```sh
 # clone repo
 
-sudo sh install.sh
+sudo make install
 ```
 By default, this installs the header and shared library to '/usr/local'.
 
 ### Changing Installation Directory
 If you do not maintain root access to your system - for example you are building on a HPC cluster - you may specify where the library is installed with the following:
 ```sh
-sh install.sh /path/to/install
+make install INSTALL_PREFIX=/path/to/install
 ```
 
 ## Linking
