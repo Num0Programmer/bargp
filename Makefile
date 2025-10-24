@@ -2,7 +2,7 @@ EX=./examples
 INC=./include
 SRC=./src
 PPM_BIN=ppm
-INSTALL_PREFIX=/usr/local
+INSTALL_PREFIX?=/usr/local
 
 
 all: libbargp.o ex
